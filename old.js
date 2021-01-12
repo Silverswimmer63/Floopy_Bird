@@ -26,13 +26,21 @@ function drawCircle() {
 //var xRange = c.width - rectWidth;
 
 //var yRange = c.height - rect.height;
-var lowerRect = {x: c.width - 10, y: c.height - 200, width: 50, height: c.height};
-var upperRect = {x: c.width - 10, y: 0, width: 50, height: c.height - 400};
-var scoreRect = {x: c.width - 10, y: 200, width: 50, height: c.height - 400};
+var lowerRect = {x: c.width - 10, y: c.height - 180, width: 100, height: c.height};
+var lowerPipeTop = {x: c.width - 20, y: c.height - 200, width: 120, height: 20};
+var upperRect = {x: c.width - 10, y: 0, width: 100, height: c.height - 400};
+var upperPipeTop = {x: c.width - 20, y: };
+var upprtPipeTop = {};
+var scoreRect = {x: c.width - 10, y: 200, width: 100, height: c.height - 400};
   function makePipe(){
     ctx.clearRect(0, 0, c.width, c.height); //since it's a loop, this clears the canvas or else a lot of circles will be draw each time this function loops
     ctx.beginPath(); //starts drawing the rectangle
     ctx.rect(lowerRect.x, lowerRect.y, lowerRect.width, lowerRect.height);
+    ctx.fillStyle = "green"; //Sets the color of the circle to light blue.
+    ctx.fill(); //Fills in the circle with the color provided in fillStyle.
+    ctx.stroke(); //finish drawing the rectangle
+    ctx.beginPath(); //starts drawing the rectangle
+    ctx.rect(lowerPipeTop.x, lowerPipeTop.y, lowerPipeTop.width, lowerPipeTop.height);
     ctx.fillStyle = "green"; //Sets the color of the circle to light blue.
     ctx.fill(); //Fills in the circle with the color provided in fillStyle.
     ctx.stroke(); //finish drawing the rectangle
@@ -42,13 +50,16 @@ var scoreRect = {x: c.width - 10, y: 200, width: 50, height: c.height - 400};
     ctx.fill(); //Fills in the circle with the color provided in fillStyle.
     ctx.stroke(); //finish drawing the rectangle
     ctx.beginPath();
-    ctx.rect(scoreRect.x, scoreRect.y, scoreRect.width, scoreRect.height);
-    ctx.fillStyle = "yellow";
+    ctx.clearRect(scoreRect.x, scoreRect.y, scoreRect.width, scoreRect.height);
     ctx.fill();
     ctx.stroke();
     lowerRect.x = lowerRect.x - 1;
     if ((lowerRect.x + lowerRect.width) == 0) {
       lowerRect.x = c.width;
+    }
+    lowerPipeTop.x = lowerPipeTop.x - 1;
+    if ((lowerPipeTop.x + lowerPipeTop.width) == 0) {
+      lowerPipeTop.x = c.width
     }
     upperRect.x = upperRect.x - 1;
     if ((upperRect.x + upperRect.width) == 0) {
@@ -78,31 +89,17 @@ function draw() {
   if (((y + dy) + ballSize) <= c.height) {
     y += dy;
   }
-  //these 2 ifs are the collision
+  //these  ifs are the collision
   if (x < lowerRect.x + lowerRect.width && x + ballSize > lowerRect.x && y < lowerRect.y + lowerRect.height && y + ballSize > lowerRect.y) {
-    /*
-    dx = -dx;
-    y += dy;
-    dy = -dy;
-    score += 1;
-    console.log(score);
-*/
     location.reload();
   }
   if (x < upperRect.x + upperRect.width && x + ballSize > upperRect.x && y < upperRect.y + upperRect.height && y + ballSize > upperRect.y) {
-    /*
-    dx = -dx;
-    y += dy;
-    dy = -dy;
-    score += 1;
-    console.log(score);
-*/
     location.reload();
   }
   if (x < scoreRect.x + scoreRect.width && x + ballSize > scoreRect.x && y < scoreRect.y + scoreRect.height && y + ballSize > scoreRect.y) {
     score += 1;
     console.log(score);
-    if (score == 64) {
+    if (score == 114) {
       hoops += 1;
       document.getElementById("score").innerHTML = hoops;
       score = 0;

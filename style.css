@@ -1,3 +1,9 @@
+#myCanvas {
+  border-style: dashed;
+  align-self: center;
+  background-image: url("flappy_bird_background.png");
+}
+
 p {
   font-size: 40px;
 }
