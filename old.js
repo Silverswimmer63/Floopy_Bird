@@ -10,7 +10,7 @@ var dy = 10; //Changing both of these numbers will also change the speed of the 
 
 var gravity = .25; //Sets the gravity pulling the ball to the ground.
 var damping = 0.75; //The rate at which the ball slows down.
-var ballSize = 5; //Sets the circle's radius.
+var ballSize = 15; //Sets the circle's radius.
 
 function drawCircle() {
   ctx.beginPath();
@@ -102,7 +102,7 @@ function draw() {
   if (x < scoreRect.x + scoreRect.width && x + ballSize > scoreRect.x && y < scoreRect.y + scoreRect.height && y + ballSize > scoreRect.y) {
     score += 1;
     console.log(score);
-    if (score == 54) {
+    if (score == 64) {
       hoops += 1;
       document.getElementById("score").innerHTML = hoops;
       score = 0;
