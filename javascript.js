@@ -17,7 +17,7 @@ var ball = {xPos: c.width/20, yPos: c.height/20, xMove: 5, yMove: 5, rad: 20};
 var gravity = 0.2;
 
 //@variable damping [integer] {restricted: >1} : changes the frictional forces on the x value
-var damping = 0.75;
+var damping = 0.01;
 
 //@variable rad [integer] : radius of the ball
 var rad = 20; 
@@ -41,6 +41,9 @@ var rectHeight = Math.floor(Math.random() * (190 - 90) + 90);
 //@variable rect [object] {requires:c[variable],rectWidth[variable],rectHeight[variable]} : makes an object fpr the rectangles that make the pipes;
 var rect = {xPos: c.width-rectWidth, yPos: c.height-rectHeight, width: rectWidth, height: rectHeight};
 
+//@variable bottomPipeLoc [object] {x:integer, y:integer} : makes the y value of the gap truely random;
+var bottomPipeLoc = {};
+
 /*
 Use this for gradient coloring of the tubes
 var grd = ctx.createLinearGradient(0, 0, 200, 0);
@@ -60,21 +63,24 @@ ctx.fillRect(rect.xPos, rect.yPos, rect.width, rect.height);
     ctx.fillStyle = "green"; //Sets the color to green.
     ctx.fill(); //Fills with the color provided in fillStyle.
     ctx.stroke(); //finish drawing the rectangle
+    
     //code for the top of the pipe on the bottom of the screen
     ctx.beginPath(); //starts drawing the rectangle
     ctx.rect(rect.xPos - 15, rect.yPos-20, rect.width+30, 40);
     ctx.fillStyle = "green"; //Sets the color to green.
     ctx.fill(); //Fills it with the color provided in fillStyle.
     ctx.stroke(); //finish drawing the rectangle
+    
     //code for the long pipe moving on the top of the canvas
     ctx.beginPath(); //starts drawing the rectangle
     ctx.rect(rect.xPos, 0, rect.width, rect.height);
     ctx.fillStyle = "green"; //Sets the color to green.
     ctx.fill(); //Fills it in with the color provided in fillStyle.
     ctx.stroke(); //finish drawing the rectangle
-    //code for
+    
+    //code for the bottom of the top pipe
     ctx.beginPath(); //starts drawing the rectangle
-    ctx.rect(rect.xPos - 15, rect.height, rect.width+30, 40);
+    ctx.rect(rect.xPos - 15, rect.height-40, rect.width+30, 40);
     ctx.fillStyle = "green"; //Sets the color to green.
     ctx.fill(); //Fills it in with the color provided in fillStyle.
     ctx.stroke(); //finish drawing the rectangle
@@ -99,30 +105,30 @@ function draw() {
     ball.yMove = -ball.yMove * damping;//changes ball y position updator
   }
   ball.yMove += gravity;//adds the gravity into the equation
-  ball.xPos += ball.xMove;//makes the ball move around 
+  //ball.xPos += ball.xMove;//makes the ball move around 
   if (((ball.yPos + ball.yMove) + rad) <= c.height) {
     ball.yPos += ball.yMove; //Wall collition dirrection change
   }
-  if ((ball.xPos + ball.xMove + rad > rect.xPos) && (ball.yPos + rad < rect.height)) {
-    ball.xMove = -ball.xMove;//wall collition direction change
+  if ((ball.xPos + rad > rect.xPos) && (ball.yPos + rad < rect.height)) {
+    ball.xPos -= 2;//wall collition direction change
   }
-  if ((ball.xPos + ball.xMove + rad > rect.xPos) && (ball.yPos + rad < rect.height)) {
-    ball.xMove = -ball.xMove;//wall collition direction change
+  if ((ball.xPos + rad > rect.xPos) && (ball.yPos + rad < rect.height)) {
+    ball.xPos -= 2;//wall collition direction change
   }
-  if ((ball.xPos + ball.xMove + rad > rect.xPos) && (ball.yPos + rad > rect.yPos)) {
-    ball.xMove = -ball.xMove;//wall collition direction chaneg
+  if ((ball.xPos + rad > rect.xPos) && (ball.yPos + rad > rect.yPos)) {
+    ball.xPos -= 2;//wall collition direction chaneg
   }
-  if ((ball.xPos + ball.xMove + rad > rect.xPos) && (ball.yPos + rad > rect.yPos)) {
-    ball.xMove = -ball.xMove;//wall collition direction change
+  if ((ball.xPos + rad > rect.xPos) && (ball.yPos + rad > rect.yPos)) {
+    ball.xPos -= 2;//wall collition direction change
   }
   if ((ball.yPos + ball.yMove + rad > rect.yPos) && (ball.xPos + rad < rect.width + rect.xPos) && (rad + ball.xPos > rect.xPos)) { //collides with the top of the bottom pipe
     ball.yMove = -ball.yMove;//wall collition direction change
   }
 
   
-  if ((ball.yPos + ball.yMove + rad < rect.height+50) && (ball.xPos + rad < rect.width + rect.xPos) && (rad + ball.xPos > rect.xPos)) { //collides with the top of the bottom pipe
+  if ((ball.yPos + ball.yMove - rad < rect.height) && (ball.xPos + rad < rect.width + rect.xPos) && (rad + ball.xPos > rect.xPos)) { //collides with the top of the bottom pipe
     ball.yMove = -ball.yMove;//wall collition direction change
-    console.log("top?")
+    console.log("top?");
   }
 }
 setInterval(draw, 10);//draw() [Interval : start] {type:function Call, time:10ms}
@@ -133,6 +139,7 @@ function makeBounce(e) {
   //e.key [string] {space_bar : " ", r_key: "r"};
   if (e.key == " ") {
     ball.yMove -= 5;//adding to the change in the y position to make the ball jump
+    
   }
   if (e.key == "r") {
     ball.xMove = -ball.xMove;//changing the direction of the x value
