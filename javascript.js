@@ -51,7 +51,7 @@ function makePipe(){
   ctx.stroke(); //finish drawing the rectangle
   //code for the top of the long/bigger pipe moving at the top of the screen
   ctx.beginPath(); //starts drawing the rectangle
-  ctx.rect(rect.xPos - 15, rect.height, rect.width+30, 40); //gives specifications for drawing it
+  ctx.rect(rect.xPos - 15, rect.height-40, rect.width+30, 40); //gives specifications for drawing it
   ctx.fillStyle = "green"; //sets the fill color of the rectangle to green
   ctx.fill(); //uses the color green mentioned above to fill in the rectangle
   ctx.stroke(); //finish drawing the rectangle
