@@ -75,7 +75,7 @@ function draw() {
     //damping is used to make the ball's height shorter after each bounce
   }
   ball.yMove += gravity; //gravity is added to make ball come down and bounce again
-  ball.xPos += ball.xMove; //allows the ball to move from left to right
+  ball.xPos = 250; //allows the ball to move from left to right
   if (((ball.yPos + ball.yMove) + ball.rad) <= c.height) { //makes sure that the ball doesn't 'sink' into the ground when it's rolling back and forth along the ground
     ball.yPos += ball.yMove;
   }
@@ -94,6 +94,10 @@ function draw() {
   if ((ball.yPos + ball.yMove + ball.rad > rect.yPos) && (ball.xPos + ball.rad < rect.width + rect.xPos) && (ball.rad + ball.xPos > rect.xPos)) { //checks for collision with the top of the bottom pipe
     ball.yMove = -ball.yMove; //if there is contact, change direction in the y-direction
   }
+  if ((ball.yPos + ball.yMove - ball.rad < rect.height) && (ball.xPos + ball.rad < rect.width + rect.xPos) && (ball.rad + ball.xPos > rect.xPos)) { //checks for collision with the top of the bottom pipe
+    ball.yMove = -ball.yMove; //if there is contact, change direction in the y-direction
+    console.log("hi");
+  }
 }
 
 setInterval(draw, 10); //like a loop that repeats the draw function to keep drawing the shapes after 10 milliseconds
@@ -102,7 +106,7 @@ document.addEventListener("keydown", makeBounce); //allows users to hit a key on
 
 function makeBounce(e) { //this function makes the ball bounce (or change direction in the x direction) when a key is pressed
   if (e.key == " ") { //if space bar is hit, then ball will bounce
-    ball.yMove -= 10; //the amount the ball is changing directions by to give illusion of bounce
+    ball.yMove -= 5; //the amount the ball is changing directions by to give illusion of bounce
   }
   if (e.key == "r") { //if 'r' key is pressed, then ball will change direction
     ball.xMove = -ball.xMove; //it goes the opposite direction the ball was initally going in the x direction
