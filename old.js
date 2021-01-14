@@ -84,6 +84,7 @@ var scoreRect = {x: c.width - 110, y: 220, width: 100, height: c.height - 420};/
 
 var score = 0;//tracks how many times the ball colides with the scoreBox
 var points = 0;//tracks score
+var highScore = 0;
 //This function draws the pipes and the ball as well as sicking the score up and checking for collision
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); //Clears the canvas every frame, so a new circle can be drawn.
@@ -94,6 +95,7 @@ function draw() {
   }
   if(y + dy > c.height - ballSize || y + dy < ballSize) { //If the circle's y position exceeds the height of the canvas...
     dy = -dy * damping; //Its y direction will be flipped, and it's speed will decrease.
+    //location.reload();//if yes, reloads the page
   }
   dy += gravity; //Adds the gravity value to the ball's dy value, giving it a artificial force of gravity.
   x += dx;
@@ -110,7 +112,7 @@ function draw() {
   if (x < upperRect.x + upperRect.width && x + ballSize > upperRect.x && y < upperRect.y + upperRect.height && y + ballSize > upperRect.y) {//checks if ball collides with pipe base
     location.reload();//if yes, reloads the page
   }
-  if (x < upperPipeTop.x + upperPipeTop.width && x + ballSize > upperPipeTop.x && y < upperPipeTop.y + upperPipeTop.height && y + ballSize > upperPipeTop.y) {//checks if ball collides with pipe top
+  if (x < upperPipeTop.x + upperPipeTop.width && x + ballSize > upperPipeTop.x && y < upperPipeTop.y + upperPipeTop.height && y - ballSize > upperPipeTop.y) {//checks if ball collides with pipe top
     location.reload();//if yes, reloads the page
   }
   if (x < scoreRect.x + scoreRect.width && x + ballSize > scoreRect.x && y < scoreRect.y + scoreRect.height && y + ballSize > scoreRect.y) {//checnks if the ball has passed through the score box
@@ -118,7 +120,10 @@ function draw() {
     console.log(score);
     if (score == 57) {//if the score is greater than 57
       points += 1;//adds one point
-      document.getElementById("score").innerHTML = points;//displayes the change in points
+      document.getElementById("score").innerHTML = "Score = " + points;//displayes the change in points
+      if (points > highScore) {
+        document.getElementById("highScore").innerHTML = "High Score = " + points;
+      }
       score = 0;//resets the score to zero
     }
   }
@@ -127,11 +132,11 @@ function draw() {
 setInterval(draw, 15);//makes the game run
 
 document.addEventListener("keydown", makeBounce);//listens for a key press
- function makeBounce(e) {
-   if (e.key == " ") {//if the spacebar is pressed the ball gains y velcity
-     dy -= 5;
-   }
-   if (e.key == "r") {//if thr "r" key is pressed the x direction is flipped
-     dx = -dx;
-   }
+function makeBounce(e) {
+ if (e.key == " ") {//if the spacebar is pressed the ball gains y velcity
+   dy -= 5;
  }
+ if (e.key == "r") {//if thr "r" key is pressed the x direction is flipped
+   dx = -dx;
+ }
+}
