@@ -32,6 +32,58 @@ function drawCircle() {
   ctx.stroke();//ends drawing
 }
 
+
+/*
+Use this for gradient coloring of the tubes
+var grd = ctx.createLinearGradient(0, 0, 200, 0);
+grd.addColorStop(0, "green");
+grd.addColorStop(1, "white");
+ctx.fillStyle = grd;
+ctx.fillRect(rect.xPos, rect.yPos, rect.width, rect.height);
+*/
+
+var numberOfTimes = 0;
+var pipeArray = [];
+
+//@class Pipes
+//@constructor_param pipeSetNum [integer] {index-start: 0, index-end:Never} : says the pipe number like a bar code
+//@constructor_param pipeX [integer] {coordinate-x_Restrictions : 0 - canvas.width}
+//@constructor_param pipeYpoints [object] {coordinate-y_definedBy : gapY && gapWidth} : returned object that tells the y-coord or the bottom and width of the top
+//@constructor_param pipeGapY [integer] {Recommended : Value != 0, != canvas.height, (pipeGapWidth/2) (+/-) pipeGapY (>=/<=)[respectively] canvas.height || 0 } : the gap starting point 
+//@constructor_param pipegapWidth [integer] {Recommended : Value != 0, != canvas.height, (pipeGapWidth/2) (+/-) pipeGapY (>=/<=)[respectively] canvas.height || 0 } : width of the gap
+//@constructor_param pipeHeight [integer] {Recommended : Value != 0, != canvas.height, > 90, < canvas.height-90} : The height but not really;
+class Pipes{
+    constructor(pipeSetNum,pipeX,pipeYpoints,pipeGapY, gapWidth,pipeWidth,pipeHeight){
+        this.pipeSetNum = pipeSetNum;//pipe number like a serial code
+        this.pipeGapY = pipeGapY;//middle of the gap and the y value of it
+        this.gapWidth = gapWidth;//middle of the pipe height gap width kind of value of it
+        this.pipeHeight = pipeHeight;//Height of pipe
+        this.pipeWidth = pipeWidth;//Width of pipe
+        this.pipeX = pipeX;//x value of the pipe
+        this.pipeYpoints = this.calculateGap(pipeGapY);//bottom pipe y value
+    }
+    calculateGap(gapY){
+        if ((this.gapWidth % 2) == 0) {
+            var topHalf = (this.gapWidth/2)-1;
+            var bottomHalf = this.gapWidth/2;
+        }else{
+            var topHalf = this.gapWidth/2;
+            var bottomHalf = this.gapWidth/2;
+        }
+            var topY = (topHalf-this.pipeGapY);
+            var bottomY = (bottomHalf+this.pipeGapY);
+            var pipeObj = {topPipeY:topY,bottomPipeY:bottomY};
+            return pipeObj;
+    }
+}
+
+function makeNewPipe(px,py,gy,gw,pw,ph) {
+    numberOfTimes++;
+    var newPipe = new Pipes(numberOfTimes,px,py,gy,gw,pw,ph);
+    pipeArray.push(newPipe);
+    return newPipe;
+}
+
 //@variable rectWidth [integer:random] {restricted} : rectangele width raqndomizer
 var rectWidth = Math.floor(Math.random() * (150 - 100) + 100);
 
@@ -44,14 +96,6 @@ var rect = {xPos: c.width-rectWidth, yPos: c.height-rectHeight, width: rectWidth
 //@variable bottomPipeLoc [object] {x:integer, y:integer} : makes the y value of the gap truely random;
 var bottomPipeLoc = {};
 
-/*
-Use this for gradient coloring of the tubes
-var grd = ctx.createLinearGradient(0, 0, 200, 0);
-grd.addColorStop(0, "green");
-grd.addColorStop(1, "white");
-ctx.fillStyle = grd;
-ctx.fillRect(rect.xPos, rect.yPos, rect.width, rect.height);
-*/
 
 //function makePipe();
 //@purpose [draw] : draws and refreshes the pipes
@@ -108,9 +152,6 @@ function draw() {
   //ball.xPos += ball.xMove;//makes the ball move around 
   if (((ball.yPos + ball.yMove) + rad) <= c.height) {
     ball.yPos += ball.yMove; //Wall collition dirrection change
-  }
-  if ((ball.xPos + rad > rect.xPos) && (ball.yPos + rad < rect.height)) {
-    ball.xPos -= 2;//wall collition direction change
   }
   if ((ball.xPos + rad > rect.xPos) && (ball.yPos + rad < rect.height)) {
     ball.xPos -= 2;//wall collition direction change
