@@ -39,7 +39,7 @@ function makePipe(){
   ctx.stroke(); //finish drawing the rectangle
   //code for the top of the pipe on the bottom of the screen
   ctx.beginPath(); //starts drawing the rectangle
-  ctx.rect(rect.xPos - 15, rect.yPos-20, rect.width+30, 40); //gives specifications for drawing it
+  ctx.rect(rect.xPos - 15, rect.yPos, rect.width+30, 40); //gives specifications for drawing it
   ctx.fillStyle = "green"; //sets the fill color of the rectangle to green
   ctx.fill(); //uses the color green mentioned above to fill in the rectangle
   ctx.stroke(); //finish drawing the rectangle
@@ -62,6 +62,9 @@ function makePipe(){
   }
 }
 
+var score = 0;//tracks how many times the ball colides with the scoreBox
+var points = 0;//tracks score
+
 //this function uses the functions above to actually draw the shapes onto the canvas/screen
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); //clears the screen
@@ -79,34 +82,37 @@ function draw() {
   if (((ball.yPos + ball.yMove) + ball.rad) <= c.height) { //makes sure that the ball doesn't 'sink' into the ground when it's rolling back and forth along the ground
     ball.yPos += ball.yMove;
   }
-  if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.yPos + ball.rad < rect.height)) { //checks for collision with the top pipe on the left side
+  if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.yPos + ball.rad < rect.height) && (ball.rad + ball.xPos < rect.xPos + rect.width)) { //checks for collision with the top pipe on the left side
     ball.xMove = -ball.xMove; //if there is, then change direction in the x-direction
   }
-  if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.yPos + ball.rad < rect.height)) { //I had to repeat this if to get rid of the glitching
-    ball.xMove = -ball.xMove;
-  }
-  if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.yPos + ball.rad > rect.yPos)) { //checks for the collision with the bottom pipe on the left side
+  if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.yPos + ball.rad > rect.yPos) && (ball.rad + ball.xPos < rect.xPos + rect.width)) { //checks for the collision with the bottom pipe on the left side
     ball.xMove = -ball.xMove; //if there is contact, change direction in the x-direction
   }
-  if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.yPos + ball.rad > rect.yPos)) { //again, I needed to repeat this to make sure the ball doesn't hit invisible walls
-    ball.xMove = -ball.xMove;
-  }
-  if ((ball.yPos + ball.yMove + ball.rad > rect.yPos) && (ball.xPos + ball.rad < rect.width + rect.xPos) && (ball.rad + ball.xPos > rect.xPos)) { //checks for collision with the top of the bottom pipe
+  if ((ball.yPos + ball.yMove + ball.rad > rect.yPos) && (ball.xPos + ball.rad < rect.width + rect.xPos + 30) && (ball.rad + ball.xPos > rect.xPos)) { //checks for collision with the top of the bottom pipe
     ball.yMove = -ball.yMove; //if there is contact, change direction in the y-direction
   }
-  if ((ball.yPos + ball.yMove - ball.rad < rect.height) && (ball.xPos + ball.rad < rect.width + rect.xPos) && (ball.rad + ball.xPos > rect.xPos)) { //checks for collision with the top of the bottom pipe
+  if ((ball.yPos + ball.yMove - ball.rad < rect.height) && (ball.xPos + ball.rad < rect.width + rect.xPos + 30) && (ball.rad + ball.xPos > rect.xPos)) { //checks for collision with the top of the bottom pipe
     ball.yMove = -ball.yMove; //if there is contact, change direction in the y-direction
-    console.log("hi");
   }
+  if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.xPos + ball.xMove + ball.rad < rect.xPos + rect.width)) {//checnks if the ball has passed through the score box
+      score += 1;//adds one to the score
+      if (score == 57) {//if the score is greater than 57
+        points += 1;//adds one point
+        document.getElementById('score').innerHTML = "Score = " + points;//displayes the change in points
+        score = 0;//resets the score to zero
+      }
+    }
 }
 
 setInterval(draw, 10); //like a loop that repeats the draw function to keep drawing the shapes after 10 milliseconds
+
 
 document.addEventListener("keydown", makeBounce); //allows users to hit a key on keyboard to interact with the objects
 
 function makeBounce(e) { //this function makes the ball bounce (or change direction in the x direction) when a key is pressed
   if (e.key == " ") { //if space bar is hit, then ball will bounce
     ball.yMove -= 5; //the amount the ball is changing directions by to give illusion of bounce
+    console.log("hi");
   }
   if (e.key == "r") { //if 'r' key is pressed, then ball will change direction
     ball.xMove = -ball.xMove; //it goes the opposite direction the ball was initally going in the x direction

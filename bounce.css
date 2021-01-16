@@ -3,3 +3,8 @@
   align-self: center;
   background-image: url("flappy_bird_background.png");
 }
+
+#score {
+  font-size: 40px;
+  font-family: monospace;
+}
