@@ -83,26 +83,24 @@ function draw() {
     ball.yPos += ball.yMove;
   }
   if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.yPos + ball.rad < rect.height) && (ball.rad + ball.xPos < rect.xPos + rect.width)) { //checks for collision with the top pipe on the left side
-    ball.xMove = -ball.xMove; //if there is, then change direction in the x-direction
+    alert("You touched the pipe and have died. GAME OVER! Refresh the screen to play again.");
   }
   if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.yPos + ball.rad > rect.yPos) && (ball.rad + ball.xPos < rect.xPos + rect.width)) { //checks for the collision with the bottom pipe on the left side
-    ball.xMove = -ball.xMove; //if there is contact, change direction in the x-direction
+    alert("You touched the pipe and have died. GAME OVER! Refresh the screen to play again.");
   }
   if ((ball.yPos + ball.yMove + ball.rad > rect.yPos) && (ball.xPos + ball.rad < rect.width + rect.xPos + 30) && (ball.rad + ball.xPos > rect.xPos)) { //checks for collision with the top of the bottom pipe
-    ball.yMove = -ball.yMove; //if there is contact, change direction in the y-direction
+    alert("You touched the pipe and have died. GAME OVER! Refresh the screen to play again.");
   }
   if ((ball.yPos + ball.yMove - ball.rad < rect.height) && (ball.xPos + ball.rad < rect.width + rect.xPos + 30) && (ball.rad + ball.xPos > rect.xPos)) { //checks for collision with the top of the bottom pipe
-    ball.yMove = -ball.yMove; //if there is contact, change direction in the y-direction
+    alert("You touched the pipe and have died. GAME OVER! Refresh the screen to play again.");
   }
-  if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.xPos + ball.xMove + ball.rad < rect.xPos + rect.width)) {//checnks if the ball has passed through the score box
-      score ++;
-      console.log(score);
-      if (score == 100) {//only adds 1 point to the score if "score" is equal to the number (meant to limit the number of points added each time the ball passes through the pipes)
-        points += 1;//adds a point to the score
-        document.getElementById('score').innerHTML = "Score = " + points;//shows the points (and updated points) on the screen
-        score = 0;//updates the score so that 
-      }
-    }
+  if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.xPos + ball.xMove + ball.rad < rect.xPos + 2)) {//checnks if the ball has passed through the score box
+    score ++;
+    console.log(score);
+    document.getElementById('score').innerHTML = "Score = " + score;//shows the points (and updated points) on the screen
+  }
+  console.log(rect.width);
+  console.log(rect.xPos);
 }
 
 setInterval(draw, 10); //like a loop that repeats the draw function to keep drawing the shapes after 10 milliseconds
@@ -116,6 +114,6 @@ function makeBounce(e) { //this function makes the ball bounce (or change direct
     console.log("hi");
   }
   if (e.key == "r") { //if 'r' key is pressed, then ball will change direction
-    ball.xMove = -ball.xMove; //it goes the opposite direction the ball was initally going in the x direction
+    location.reload(); //it goes the opposite direction the ball was initally going in the x direction
   }
 }
