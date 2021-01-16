@@ -95,11 +95,12 @@ function draw() {
     ball.yMove = -ball.yMove; //if there is contact, change direction in the y-direction
   }
   if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.xPos + ball.xMove + ball.rad < rect.xPos + rect.width)) {//checnks if the ball has passed through the score box
-      score += 1;//adds one to the score
-      if (score == 57) {//if the score is greater than 57
-        points += 1;//adds one point
-        document.getElementById('score').innerHTML = "Score = " + points;//displayes the change in points
-        score = 0;//resets the score to zero
+      score ++;
+      console.log(score);
+      if (score == 100) {//only adds 1 point to the score if "score" is equal to the number (meant to limit the number of points added each time the ball passes through the pipes)
+        points += 1;//adds a point to the score
+        document.getElementById('score').innerHTML = "Score = " + points;//shows the points (and updated points) on the screen
+        score = 0;//updates the score so that 
       }
     }
 }
