@@ -2,8 +2,8 @@ var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 
 //These 2 variables determine the starting circles location, in this case, the top left of the screen.
-var x = c.width / 2; //myCanvas.width / 20
-var y = c.height / 2; //myCanvas.height / 20
+var x = (c.width / 2); //myCanvas.width / 20
+var y = (c.height / 2); //myCanvas.height / 20
 
 var dx = 0; //These variables will be used later to change the position of the circle.
 var dy = 10; //Changing both of these numbers will also change the speed of the circle (in other words, how many units the circle moves per frame).
@@ -12,9 +12,9 @@ var gravity = .15; //Sets the gravity pulling the ball to the ground.
 var damping = 0.75; //The rate at which the ball slows down.
 var ballSize = 15; //Sets the circle's radius.
 
-function drawCircle() {
+function drawSquare() {
   ctx.beginPath();
-  ctx.arc(x, y, ballSize, 0, Math.PI*2); //The circle, on frame one, will always start at the top left, and its size will always be set to ballSize.
+  ctx.rect(x, y, ballSize, 0, Math.PI*2); //The circle, on frame one, will always start at the top left, and its size will always be set to ballSize.
   ctx.fillStyle = "#FF00FF"; //Sets the color of the circle to light blue.
   ctx.fill(); //Fills in the circle with the color provided in fillStyle.
   ctx.stroke();
