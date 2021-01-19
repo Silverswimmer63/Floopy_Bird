@@ -1,4 +1,4 @@
-
+var timmer = 0;
 //Commenting note
 // @thing  : start of declarations with thing saying what it is variable,object,class and so on
 // [] : tells what it is/ what it is for
@@ -66,12 +66,18 @@ class Pipes{
         if ((this.gapWidth % 2) == 0) {
             var topHalf = (this.gapWidth/2)-1;
             var bottomHalf = this.gapWidth/2;
+            console.log(topHalf + " Top");
+            console.log(bottomHalf + " Bottom");
         }else{
-            var topHalf = this.gapWidth/2;
-            var bottomHalf = this.gapWidth/2;
+            var topHalf = Math.floor(this.gapWidth/2)+1;
+            var bottomHalf = Math.floor(this.gapWidth/2);
+            console.log(topHalf + " Top");
+            console.log(bottomHalf + " Bottom");
         }
-            var topY = (topHalf-this.pipeGapY);
-            var bottomY = (bottomHalf+this.pipeGapY);
+            var topY = Math.abs(topHalf-this.pipeGapY);
+            var bottomY = (topY+bottomHalf+this.gapWidth);
+            console.log(topY + " TopY");
+            console.log(bottomY + " BottomY");
             var pipeObj = {topPipeY:topY,bottomPipeY:bottomY};
             return pipeObj;
     }
@@ -91,8 +97,9 @@ var rectWidth = Math.floor(Math.random() * (150 - 100) + 100);
 var rectHeight = Math.floor(Math.random() * (190 - 90) + 90);
 
 //@variable rect [object] {requires:c[variable],rectWidth[variable],rectHeight[variable]} : makes an object fpr the rectangles that make the pipes;
-var rect = {xPos: c.width-rectWidth, yPos: c.height-rectHeight, width: rectWidth, height: rectHeight};
-
+//pipeSetNum,pipeX,pipeYpoints,pipeGapY, gapWidth,pipeWidth,pipeHeight
+var makeOne = makeNewPipe(c.width-rectWidth,c.height-rectHeight,Math.floor(Math.random()*(c.height-200)+100),85,rectWidth,rectHeight);
+makeOne;
 //@variable bottomPipeLoc [object] {x:integer, y:integer} : makes the y value of the gap truely random;
 var bottomPipeLoc = {};
 
@@ -102,37 +109,40 @@ var bottomPipeLoc = {};
   function makePipe(){
     ctx.clearRect(0, 0, c.width, c.height); //since it's a loop, this clears the canvas or else a lot of circles will be draw each time this function loops
     //code for the bottom, long pipe
+for (var i = 0; i < pipeArray.length;i++) {
+    //code
     ctx.beginPath(); //starts the draw/path
-    ctx.rect(rect.xPos, rect.yPos, rect.width, rect.height);
+    ctx.rect(pipeArray[i].pipeX, pipeArray[i].pipeYpoints.bottomPipeY, pipeArray[i].pipeWidth, Math.abs(pipeArray[i].pipeYpoints.bottomPipeY-c.height));
     ctx.fillStyle = "green"; //Sets the color to green.
     ctx.fill(); //Fills with the color provided in fillStyle.
     ctx.stroke(); //finish drawing the rectangle
     
     //code for the top of the pipe on the bottom of the screen
     ctx.beginPath(); //starts drawing the rectangle
-    ctx.rect(rect.xPos - 15, rect.yPos-20, rect.width+30, 40);
+    ctx.rect(pipeArray[i].pipeX - 15, pipeArray[i].pipeYpoints.bottomPipeY-20, pipeArray[i].pipeWidth+30, 40);
     ctx.fillStyle = "green"; //Sets the color to green.
     ctx.fill(); //Fills it with the color provided in fillStyle.
     ctx.stroke(); //finish drawing the rectangle
     
     //code for the long pipe moving on the top of the canvas
     ctx.beginPath(); //starts drawing the rectangle
-    ctx.rect(rect.xPos, 0, rect.width, rect.height);
+    ctx.rect(pipeArray[i].pipeX, 0, pipeArray[i].pipeWidth, pipeArray[i].pipeYpoints.topPipeY);
     ctx.fillStyle = "green"; //Sets the color to green.
     ctx.fill(); //Fills it in with the color provided in fillStyle.
     ctx.stroke(); //finish drawing the rectangle
     
     //code for the bottom of the top pipe
     ctx.beginPath(); //starts drawing the rectangle
-    ctx.rect(rect.xPos - 15, rect.height-40, rect.width+30, 40);
+    ctx.rect(pipeArray[i].pipeX - 15, pipeArray[i].pipeYpoints.topPipeY-40, pipeArray[i].pipeWidth+30, 40);
     ctx.fillStyle = "green"; //Sets the color to green.
     ctx.fill(); //Fills it in with the color provided in fillStyle.
     ctx.stroke(); //finish drawing the rectangle
-    rect.xPos --;//moves the pipes to the west
-    if ((rect.xPos + rect.width) == 0) {
-      rect.xPos = c.width;//if it is off the canvas draw it on the opposites side
+    pipeArray[i].pipeX --;//moves the pipes to the west
+    if ((pipeArray[i].pipeX + pipeArray[i].pipeWidth) == 0) {
+      pipeArray.splice(i-1,i)//if it is off the canvas draw it on the opposites side
       //@note [change] {When : " pipes are turned into a class "} : this will instead just nuke them 
     }
+   }
   }
 
 
@@ -153,23 +163,28 @@ function draw() {
   if (((ball.yPos + ball.yMove) + rad) <= c.height) {
     ball.yPos += ball.yMove; //Wall collition dirrection change
   }
-  if ((ball.xPos + rad > rect.xPos) && (ball.yPos + rad < rect.height)) {
-    ball.xPos -= 2;//wall collition direction change
+  for (var i = 0; i < pipeArray.length; i++) {
+    var rect = pipeArray[i];
+  if ((ball.xPos + rad > pipeArray[i].pipeX) && (ball.yPos + rad < pipeArray[i].pipeHeight)||
+  (ball.xPos + rad > pipeArray[i].pipeX) && (ball.yPos + rad > pipeArray[i].pipeYpoints.bottomPipeY)||
+ (ball.xPos + rad > pipeArray[i].pipeX) && (ball.yPos + rad > pipeArray[i].pipeYpoints.bottomPipeY) ||
+ (ball.yPos + ball.yMove + rad > pipeArray[i].pipeYpoints.bottomPipeY) && (ball.xPos + rad < pipeArray[i].pipeWidth + pipeArray[i].pipeX) && (rad + ball.xPos > pipeArray[i].pipeX)|| //collides with the top of the bottom pipe
+  (ball.yPos + ball.yMove - rad < pipeArray[i].pipeHeight) && (ball.xPos + rad < pipeArray[i].pipeWidth + pipeArray[i].pipeX) && (rad + ball.xPos > pipeArray[i].pipeX) //collides with the top of the bottom pipe
+     ){
+    window.alert("The Game Has Ended");
+    throw new Error("GameEnd");
   }
-  if ((ball.xPos + rad > rect.xPos) && (ball.yPos + rad > rect.yPos)) {
-    ball.xPos -= 2;//wall collition direction chaneg
   }
-  if ((ball.xPos + rad > rect.xPos) && (ball.yPos + rad > rect.yPos)) {
-    ball.xPos -= 2;//wall collition direction change
-  }
-  if ((ball.yPos + ball.yMove + rad > rect.yPos) && (ball.xPos + rad < rect.width + rect.xPos) && (rad + ball.xPos > rect.xPos)) { //collides with the top of the bottom pipe
-    ball.yMove = -ball.yMove;//wall collition direction change
-  }
+  timmer++;
+  if (timmer == 300) {
+//@variable rectWidth [integer:random] {restricted} : rectangele width raqndomizer
+var rectWidth = Math.floor(Math.random() * (150 - 100) + 100);
 
-  
-  if ((ball.yPos + ball.yMove - rad < rect.height) && (ball.xPos + rad < rect.width + rect.xPos) && (rad + ball.xPos > rect.xPos)) { //collides with the top of the bottom pipe
-    ball.yMove = -ball.yMove;//wall collition direction change
-    console.log("top?");
+//@variable rectHeight [integer:random] {restricted} : rectangle height randomizer
+var rectHeight = Math.floor(Math.random() * (190 - 90) + 90);
+
+    makeNewPipe(c.width-rectWidth,c.height-rectHeight,Math.floor(Math.random()*(c.height-200)+100),85,rectWidth,rectHeight);
+  timmer = 0;
   }
 }
 setInterval(draw, 10);//draw() [Interval : start] {type:function Call, time:10ms}
