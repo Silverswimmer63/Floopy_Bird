@@ -1,5 +1,5 @@
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
+var c = document.getElementById("myCanvas"); //loads the instructions/code from below into the canvas on the screen
+var ctx = c.getContext("2d"); //gains access to drawing the shapes and stuff from below
 
 /*
 var ball gives specific attributes to the "ball". xPos is the x position of the
@@ -27,6 +27,7 @@ var rectHeight = Math.floor(Math.random() * (175 - 125) + 125);
 //gives you a random number between 125-175 for the height of the rectangle being drawn
 var rect = {xPos: c.width-rectWidth, yPos: c.height-rectHeight, width: rectWidth, height: rectHeight};
 //gives specification to be used later for the rectangle (the pipes) that will be drawn
+var score = 0;//tracks score and adds a point if ball passes through the tubes
 
 //this function makes the two pipes (one on top and one on bottom)
 function makePipe(){
@@ -62,9 +63,6 @@ function makePipe(){
   }
 }
 
-var score = 0;//tracks how many times the ball colides with the scoreBox
-var points = 0;//tracks score
-
 //this function uses the functions above to actually draw the shapes onto the canvas/screen
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); //clears the screen
@@ -78,40 +76,35 @@ function draw() {
     //damping is used to make the ball's height shorter after each bounce
   }
   ball.yMove += gravity; //gravity is added to make ball come down and bounce again
-  ball.xPos = 250; //allows the ball to move from left to right
+  ball.xPos = 250; //makes the ball bounce up and down in one stationary point (x-coordinate)
   if (((ball.yPos + ball.yMove) + ball.rad) <= c.height) { //makes sure that the ball doesn't 'sink' into the ground when it's rolling back and forth along the ground
     ball.yPos += ball.yMove;
   }
+  if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.xPos + ball.xMove + ball.rad < rect.xPos + 2)) {//Checks to see if the ball has passed through the gap between the pipes
+    score ++; //if it did, add a point to the score
+    console.log(score); //log the score so it is visible and we can keep track of it
+    document.getElementById('score').innerHTML = "Score = " + score;//shows the points (and updated points) on the top center of the screen
+  }
   if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.yPos + ball.rad < rect.height) && (ball.rad + ball.xPos < rect.xPos + rect.width)) { //checks for collision with the top pipe on the left side
-    alert("You touched the pipe and have died. GAME OVER! Refresh the screen to play again.");
+    alert("GAME OVER! Your score is " + score + ". Refresh the screen to play again."); //if there is contact, game ends and send up an alert box telling you to start over and your score
   }
   if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.yPos + ball.rad > rect.yPos) && (ball.rad + ball.xPos < rect.xPos + rect.width)) { //checks for the collision with the bottom pipe on the left side
-    alert("You touched the pipe and have died. GAME OVER! Refresh the screen to play again.");
+    alert("GAME OVER! Your score is " + score + ". Refresh the screen to play again."); //if there is contact, game ends and send up an alert box telling you to start over and your score
   }
-  if ((ball.yPos + ball.yMove + ball.rad > rect.yPos) && (ball.xPos + ball.rad < rect.width + rect.xPos + 30) && (ball.rad + ball.xPos > rect.xPos)) { //checks for collision with the top of the bottom pipe
-    alert("You touched the pipe and have died. GAME OVER! Refresh the screen to play again.");
+  if ((ball.yPos + ball.yMove + ball.rad > rect.yPos) && (ball.xPos + ball.rad < rect.width + rect.xPos + 50) && (ball.rad + ball.xPos > rect.xPos)) { //checks for collision with the top of the bottom pipe
+    alert("GAME OVER! Your score is " + score + ". Refresh the screen to play again."); //if there is contact, game ends and send up an alert box telling you to start over and your score
   }
-  if ((ball.yPos + ball.yMove - ball.rad < rect.height) && (ball.xPos + ball.rad < rect.width + rect.xPos + 30) && (ball.rad + ball.xPos > rect.xPos)) { //checks for collision with the top of the bottom pipe
-    alert("You touched the pipe and have died. GAME OVER! Refresh the screen to play again.");
+  if ((ball.yPos + ball.yMove - ball.rad < rect.height) && (ball.xPos + ball.rad < rect.width + rect.xPos + 50) && (ball.rad + ball.xPos > rect.xPos)) { //checks for collision with the top of the bottom pipe
+    alert("GAME OVER! Your score is " + score + ". Refresh the screen to play again."); //if there is contact, game ends and send up an alert box telling you to start over and your score
   }
-  if ((ball.xPos + ball.xMove + ball.rad > rect.xPos) && (ball.xPos + ball.xMove + ball.rad < rect.xPos + 2)) {//checnks if the ball has passed through the score box
-    score ++;
-    console.log(score);
-    document.getElementById('score').innerHTML = "Score = " + score;//shows the points (and updated points) on the screen
-  }
-  console.log(rect.width);
-  console.log(rect.xPos);
 }
 
 setInterval(draw, 10); //like a loop that repeats the draw function to keep drawing the shapes after 10 milliseconds
 
-
 document.addEventListener("keydown", makeBounce); //allows users to hit a key on keyboard to interact with the objects
-
 function makeBounce(e) { //this function makes the ball bounce (or change direction in the x direction) when a key is pressed
   if (e.key == " ") { //if space bar is hit, then ball will bounce
     ball.yMove -= 5; //the amount the ball is changing directions by to give illusion of bounce
-    console.log("hi");
   }
   if (e.key == "r") { //if 'r' key is pressed, then ball will change direction
     location.reload(); //it goes the opposite direction the ball was initally going in the x direction
