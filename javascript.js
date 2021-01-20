@@ -171,8 +171,7 @@ function draw() {
  (ball.yPos + ball.yMove + rad > pipeArray[i].pipeYpoints.bottomPipeY) && (ball.xPos + rad < pipeArray[i].pipeWidth + pipeArray[i].pipeX) && (rad + ball.xPos > pipeArray[i].pipeX)|| //collides with the top of the bottom pipe
   (ball.yPos + ball.yMove - rad < pipeArray[i].pipeHeight) && (ball.xPos + rad < pipeArray[i].pipeWidth + pipeArray[i].pipeX) && (rad + ball.xPos > pipeArray[i].pipeX) //collides with the top of the bottom pipe
      ){
-    window.alert("The Game Has Ended");
-    throw new Error("GameEnd");
+    window.location.reload(true);
   }
   }
   timmer++;
