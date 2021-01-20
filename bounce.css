@@ -1,7 +1,15 @@
+@keyframes moveBackground {
+  from {background-position: 1000px 0px;}
+  to {background-position: 0px 0px;}
+}
+
 #myCanvas {
   border-style: dashed;
   align-self: center;
   background-image: url("flappy_bird_background.png");
+  background-position: 0px 0px;
+  background-repeat: repeat-x;;
+  animation: moveBackground 25s linear infinite;
 }
 
 #score {
