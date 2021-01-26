@@ -4,7 +4,7 @@
 // {} : restrictions, info, types, ect.
 // {restricted} : states that the said thing is restricted in some way shape or form
 
-var timmer = 0;//making an itterator for time
+var timmer = 0;//making an itterator for time 
 
 var score = 0;//score counter;
 //@variable c [Object] : Canvas elements
