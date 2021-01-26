@@ -58,6 +58,8 @@ ctx.fillRect(rect.xPos, rect.yPos, rect.width, rect.height);
     }
   }
 
+//hehe
+
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
   makePipe();
