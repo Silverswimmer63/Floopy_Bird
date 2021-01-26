@@ -100,3 +100,4 @@ function makeBounce(e) {
     ball.xMove = -ball.xMove;
   }
 }
+//I could probably do set sprites for the game if anyone wants -Em
