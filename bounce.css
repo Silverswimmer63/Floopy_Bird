@@ -1,6 +1,6 @@
 @keyframes moveBackground {
-  from {background-position: 0px 0px;}
-  to {background-position: 1000px 0px;}
+  from {background-position: 1000px 0px;}
+  to {background-position: 0px 0px;}
 }
 
 #myCanvas {
@@ -16,4 +16,8 @@ canvas{
   background-repeat: repeat-x;;
   animation: moveBackground 25s linear infinite;
 
+}
+div{
+  font-family:cursive;
+  text-align:center;
 }
