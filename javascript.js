@@ -11,7 +11,7 @@ function drawCircle() {
   ctx.beginPath();
   ctx.arc(ball.xPos, ball.yPos, rad, 0, Math.PI*2);
   ctx.fillStyle = "red";
-  ctx.fill();
+  ctx.fill();//hello
   ctx.stroke();
 }
 
