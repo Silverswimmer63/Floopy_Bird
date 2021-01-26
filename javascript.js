@@ -34,8 +34,8 @@ var rad = 20;
 function drawCircle() {
  ctx.save();
   ctx.beginPath();//beggins dawing
-  
-ctx.drawImage(flipFlap, (ball.xPos-(rad+12)),(ball.yPos-(rad+18)),(rad*2)+30,(rad*2)+30);//Atemping to drawing an image 
+//this was where the circle was
+ctx.drawImage(flipFlap, (ball.xPos-(rad+10)),(ball.yPos-(rad+18)),(rad*2)+30,(rad*2)+30);//Atemping to drawing an image 
   ctx.fill();//sets the fill
   ctx.stroke();//ends drawing
   ctx.restore();
