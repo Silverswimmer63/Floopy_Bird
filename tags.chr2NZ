@@ -1,0 +1,29 @@
+c	old.js	/^var c = document.getElementById("myCanvas");$/;"	v
+ctx	old.js	/^var ctx = c.getContext("2d");$/;"	v
+x	old.js	/^var x = c.width \/ 2; \/\/myCanvas.width \/ 20$/;"	v
+y	old.js	/^var y = c.height \/ 2; \/\/myCanvas.height \/ 20$/;"	v
+dx	old.js	/^var dx = 0; \/\/These variables will be used later to change the position of the circle.$/;"	v
+dy	old.js	/^var dy = 10; \/\/Changing both of these numbers will also change the speed of the circle (in other words, how many units the circle moves per frame).$/;"	v
+gravity	old.js	/^var gravity = .25; \/\/Sets the gravity pulling the ball to the ground.$/;"	v
+damping	old.js	/^var damping = 0.75; \/\/The rate at which the ball slows down.$/;"	v
+ballSize	old.js	/^var ballSize = 5; \/\/Sets the circle's radius.$/;"	v
+drawCircle	old.js	/^function drawCircle() {$/;"	f
+x	old.js	/^var lowerRect = {x: c.width - 10, y: c.height - 200, width: 50, height: c.height};$/;"	p	class:lowerRect
+x	old.js	/^var upperRect = {x: c.width - 10, y: 0, width: 50, height: c.height - 400};$/;"	p	class:upperRect
+x	old.js	/^var scoreRect = {x: c.width - 10, y: 200, width: 50, height: c.height - 400};$/;"	p	class:scoreRect
+makePipe	old.js	/^  function makePipe(){$/;"	f
+score	old.js	/^var score = 0;$/;"	v
+hoops	old.js	/^var hoops = 0;$/;"	v
+x	old.js	/^  var scoreBox = {x: c.width - 10, y: c.height - 200, width: 10,  height: 100};$/;"	p	class:draw.scoreBox
+draw	old.js	/^function draw() {$/;"	f
+makeBounce	old.js	/^ function makeBounce(e) {$/;"	f
+bird	javascript.js	/^var bird;$/;"	v
+pipes	javascript.js	/^var pipes = [];$/;"	v
+setup	javascript.js	/^function setup() {$/;"	f
+draw	javascript.js	/^function draw() {$/;"	f
+keyPressed	javascript.js	/^function keyPressed() {$/;"	f
+hits	javascript.js	/^  this.hits = function(bird) {$/;"	m	class:Pipe
+show	javascript.js	/^  this.show = function() {$/;"	m	class:Pipe
+update	javascript.js	/^  this.update = function() {$/;"	m	class:Pipe
+offscreen	javascript.js	/^  this.offscreen = function() {$/;"	m	class:Pipe
+Pipe	javascript.js	/^function Pipe() {$/;"	c
