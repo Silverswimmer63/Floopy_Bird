@@ -31,6 +31,7 @@ var lowerPipeTop = {x: c.width - 120, y: c.height - 200, width: 120, height: 20}
 var upperRect = {x: c.width - 110, y: 0, width: 100, height: c.height - 400};//creates the base of the upper pipe
 var upperPipeTop = {x: c.width - 120, y: c.height - 400, width: 120, height: 20};//creates the top of the upper pipe
 var scoreRect = {x: c.width - 110, y: 220, width: 100, height: c.height - 420};//creates a rectangle for tracking score
+Class pipe
 //This function draws the pipes and makes them move from right to left accross the screen
   function makePipe(){
     ctx.clearRect(0, 0, c.width, c.height); //since it's a loop, this clears the canvas or else a lot of circles will be draw each time this function loops
