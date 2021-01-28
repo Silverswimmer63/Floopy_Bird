@@ -7,7 +7,7 @@ function setup() {
   pipes.push(new Pipe());
 }
 
-function draw() {
+function draw() {//hello
   background(0);
 
   for (var i = pipes.length - 1; i >= 0; i--) {//length of pipes as
