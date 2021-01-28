@@ -19,6 +19,7 @@ var timer = 0; //basically a counter for when to make a new pipe
 var difficultTimer = 0; //keeps track of the 'time' so we know how frequent the pipes should be made and appear on the screen
 var score = 0; //starts off the score/points you have when you play the game (ie. add 1 when you pass through the gap)
 var spaceDifficulty = 400; //the "amount of space between the pipes". In reality, it's how frequent the pipes are made one after the other.
+var imageCounter = 0;
 
 var img = new Image(); //basically creates the image
 img.onload = function(){ //uploads the image onto the screen
@@ -26,13 +27,34 @@ img.onload = function(){ //uploads the image onto the screen
 }
 img.src="birb.png"; //source for where the image is coming from
 
-//function drawCircle();
+var imgUp = new Image(); //basically creates the image
+imgUp.onload = function(){ //uploads the image onto the screen
+  drawCircle(); //uses a function from below
+}
+imgUp.src="birbUp.png"; //source for where the image is coming from
+
+var imgDown = new Image(); //basically creates the image
+imgDown.onload = function(){ //uploads the image onto the screen
+  drawCircle(); //uses a function from below
+}
+imgDown.src="birbDown.png"; //source for where the image is coming from
+
+ //this function draws the birb on the screen
 function drawCircle() {
  ctx.save();
- ctx.beginPath();//beggins dawing
- ctx.drawImage(img, ball.xPos-ball.rad-10, ball.yPos-ball.rad-10, ball.rad+40, ball.rad+40);//Atemping to drawing an image
- ctx.fill();//sets the fill
- ctx.stroke();//ends drawing
+ ctx.beginPath(); //starts the drawing
+ if (imageCounter == 0) {
+   ctx.drawImage(img, ball.xPos-ball.rad-10, ball.yPos-ball.rad-10, ball.rad+40, ball.rad+20); //parameters for drawing the bird
+ }
+ if (imageCounter == 1) {
+   ctx.drawImage(imgUp, ball.xPos-ball.rad-10, ball.yPos-ball.rad-10, ball.rad+40, ball.rad+40); //parameters for drawing the bird
+
+ }
+ if (imageCounter == 2) {
+   ctx.drawImage(imgDown, ball.xPos-ball.rad-10, ball.yPos-ball.rad-10, ball.rad+40, ball.rad+40); //parameters for drawing the bird
+ }
+ ctx.fill(); //fills the image/drawing
+ ctx.stroke(); //finishes the drawing
  ctx.restore();
 }
 
@@ -157,6 +179,15 @@ function draw() {
   }
   ball.yMove += gravity; //gravity is added to make ball come down and bounce again
   ball.xPos = 250; //allows the ball to move from left to right
+  if (ball.yMove < -1) {
+    imageCounter = 1;
+  }
+  else if (ball.yMove > 2) {
+    imageCounter = 2;
+  }
+  else {
+    imageCounter = 0;
+  }
   if (((ball.yPos + ball.yMove) + ball.rad) <= c.height) { //makes sure that the ball doesn't 'sink' into the ground when it's rolling back and forth along the ground
     ball.yPos += ball.yMove;
   }
