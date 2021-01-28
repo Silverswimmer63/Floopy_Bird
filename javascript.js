@@ -21,7 +21,7 @@ flipFlap.onload = function(){//load the image
  }
  flipFlap.src = "flipFlapBird.png";//this is where the image goes
 //@variable gravity [integer] {retricted :>1} : Gravity control 
-var gravity = 0.2;
+var gravity = 0.15;
 
 //@variable damping [integer] {restricted: >1} : changes the frictional forces on the x value
 var damping = 0.01;
@@ -29,13 +29,34 @@ var damping = 0.01;
 //@variable rad [integer] : radius of the ball
 var rad = 20; 
 
+var direction = "Forward";
 //function drawCircle();
 //@purpose [draw] : draws and refreshes the ball/birb
 function drawCircle() {
  ctx.save();
   ctx.beginPath();//beggins dawing
+  if (ball.yMove < -1) {
+   flipFlap.src = "flipFlapBirdUp.png";//this is where the image goes
+    direction = "Up"
+  }else if (ball.yMove > 2) {
+     flipFlap.src = "flipFlapBirdown.png";//this is where the image goes
+  direction = "Down";
+  }
+  else{
+    flipFlap.src = "flipFlapBird.png";//this is where the image goes
+    direction = "Forward";
+  }
 //this was where the circle was
+//ctx.arc(ball.xPos, ball.yPos, rad, 0, Math.PI*2);//starts arc for ball
+ if (direction == "Forward") {
 ctx.drawImage(flipFlap, (ball.xPos-(rad+10)),(ball.yPos-(rad+18)),(rad*2)+30,(rad*2)+30);//Atemping to drawing an image 
+ }else if (direction == "Up") {
+ctx.drawImage(flipFlap, (ball.xPos-(rad+3)),(ball.yPos-(rad+9)),(rad)+30,(rad)+30);//Atemping to drawing an image 
+ }
+ else if (direction == "Down") {
+ctx.drawImage(flipFlap, (ball.xPos-(rad+3)),(ball.yPos-(rad+7)),(rad)+30,(rad)+30);//Atemping to drawing an image 
+ }
+  //ctx.fillStyle = "rgba(0,0,0,0.1)";
   ctx.fill();//sets the fill
   ctx.stroke();//ends drawing
   ctx.restore();
