@@ -194,10 +194,10 @@ function draw() {
     ball.yPos += ball.yMove; //Wall collition dirrection change
   }
   for (var i = 0; i < pipeArray.length; i++) {//for loop that itterates through the pipeArray to check for collitions
-  if (ball.xPos == (pipeArray[i].pipeX+(pipeArray[i].pipeWidth/2)) && (ball.yPos >= pipeArray[i].pipeYpoints.topPipeY && ball.yPos <= pipeArray[i].pipeYpoints.bottomPipeY)) {
+  if (ball.xPos == (pipeArray[i].pipeX+(pipeArray[i].pipeWidth)) && (ball.yPos >= pipeArray[i].pipeYpoints.topPipeY && ball.yPos <= pipeArray[i].pipeYpoints.bottomPipeY)) {
     score++;
     var scoreTarget = document.getElementsByClassName("score");
-    scoreTarget[0].innerText = "Score : " + score;
+    scoreTarget.innerHTML = "Score : " + score;
   }
   if ((ball.xPos + rad > pipeArray[i].pipeX) && (ball.yPos + rad < pipeArray[i].pipeHeight)||
   (ball.xPos + rad > pipeArray[i].pipeX) && (ball.yPos + rad > pipeArray[i].pipeYpoints.bottomPipeY)||
@@ -227,7 +227,7 @@ document.addEventListener("keyup", makeBounce);
 function makeBounce(e) {
   //e.key [string] {r_key: "r"};
   if (e.key == " ") {
-    ball.yMove -= 5;//adding to the change in the y position to make the ball jump
+    ball.yMove -= 4;//adding to the change in the y position to make the ball jump
   }
   //e.key [string] {space_bar : " "}
   if (e.key == "r") {
