@@ -16,15 +16,28 @@ var rectLower = {xPos: c.width-rectWidth, yPos: c.height-rectHeight, width: rect
 var rectUpper = {xPos: c.width-rectWidth, yPos: 0, width: rectWidth, height: rectHeight}; //rectangle for the long, top pipe
 var rectArray = []; //will be used for easy storage and accessibility later in the for loop to keep track of the multiple pipes being created
 var timer = 0; //basically a counter for when to make a new pipe
+var difficultTimer = 0; //keeps track of the 'time' so we know how frequent the pipes should be made and appear on the screen
 var score = 0; //starts off the score/points you have when you play the game (ie. add 1 when you pass through the gap)
+var spaceDifficulty = 400; //the "amount of space between the pipes". In reality, it's how frequent the pipes are made one after the other.
 
-function drawCircle() { //this function draws the circle on the screen
-  ctx.beginPath(); //this starts the drawing for the circle
-  ctx.arc(ball.xPos, ball.yPos, ball.rad, 0, Math.PI*2); //gives the specification for drawing the circle
-  ctx.fillStyle = "red"; //gives the color to draw the ball in
-  ctx.fill(); //actually uses that color to draw the ball in
-  ctx.stroke(); //finishes drawing the ball
+var img = new Image(); //basically creates the image
+img.onload = function(){ //uploads the image onto the screen
+  drawCircle(); //uses a function from below
 }
+img.src="birb.png"; //source for where the image is coming from
+
+//function drawCircle();
+function drawCircle() {
+ ctx.save();
+ ctx.beginPath();//beggins dawing
+ ctx.drawImage(img, ball.xPos-ball.rad-10, ball.yPos-ball.rad-10, ball.rad+40, ball.rad+40);//Atemping to drawing an image
+ ctx.fill();//sets the fill
+ ctx.stroke();//ends drawing
+ ctx.restore();
+}
+
+//ctx.drawImage(img, (ball.xPos-(ball.rad+12)),(ball.yPos-(ball.rad+18)),(ball.rad)+30,(ball.rad)+30);//Atemping to drawing an image
+
 
 /* makePipe(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, upRectY, upRectWid, upRectHeight)
 @param lowRectX {obj}- x position of the long, bottom tube
@@ -103,7 +116,14 @@ function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, 
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); //clears the screen
   makePipe(rectLower.xPos, rectLower.yPos, rectLower.width, rectLower.height, rectUpper.xPos, rectUpper.yPos, rectUpper.width, rectUpper.height); //draws the pipes
-  if (timer == 300) { //checks how frequently the pipes should be made
+  if (difficultTimer == 1000) { //checks for that timer value before implementing what's inside
+    spaceDifficulty = spaceDifficulty - 40; //decreases the amount of time pipes are showing up, thereby decreasing the space between them
+    if (spaceDifficulty < 200) { //this restricts the pipes from getting too close and overlapping each other or else it would be impossible to continue playing
+      spaceDifficulty = 200;
+    }
+    difficultTimer = 0; //resets the timer
+  }
+  if (timer == spaceDifficulty) { //checks how frequently the pipes should be made
     var chance = Math.floor(Math.random() * (1 - 4) + 4); //1 out of 3 chances
     if (chance == 1) { //this if makes the tubes equal so that the gap is in the middle
       var rectHUp = Math.floor(Math.random() * (190 - 150) + 150); //gives you a random number between 150-190 for the height of the rectangle being drawn
@@ -144,6 +164,7 @@ function draw() {
     collisionCheck(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU);
   }
   timer ++; //increments so that the timer will eventually equal 300 and implement the if
+  difficultTimer ++;
 }
 
 setInterval(draw, 10); //like a loop that repeats the draw function to keep drawing the shapes after 10 milliseconds
