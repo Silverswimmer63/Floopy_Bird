@@ -194,11 +194,17 @@ function draw() {
     ball.yPos += ball.yMove; //Wall collition dirrection change
   }
   for (var i = 0; i < pipeArray.length; i++) {//for loop that itterates through the pipeArray to check for collitions
-  if (ball.xPos == (pipeArray[i].pipeX+(pipeArray[i].pipeWidth)) && (ball.yPos >= pipeArray[i].pipeYpoints.topPipeY && ball.yPos <= pipeArray[i].pipeYpoints.bottomPipeY)) {
-    score++;
-    var scoreTarget = document.getElementsByClassName("score");
+  //if (ball.xPos == (pipeArray[i].pipeX+(pipeArray[i].pipeWidth)) && (ball.yPos >= pipeArray[i].pipeYpoints.topPipeY && ball.yPos <= pipeArray[i].pipeYpoints.bottomPipeY)) {
+  //  score++;
+  //  var scoreTarget = document.getElementsByClassName("score");
+  //  scoreTarget.innerHTML = "Score : " + score;
+  //}
+    if ((ball.xPos + ball.rad > pipeArray[i].pipeX) && (ball.xPos+ ball.rad < pipeArray[i].pipeX + 2)) {//Checks to see if the ball has passed through the gap between the pipes
+    score ++; //if it did, add a point to the score
+    var scoreTarget = document.getElementsById("score");
     scoreTarget.innerHTML = "Score : " + score;
   }
+
   if ((ball.xPos + rad > pipeArray[i].pipeX) && (ball.yPos + rad < pipeArray[i].pipeHeight)||
   (ball.xPos + rad > pipeArray[i].pipeX) && (ball.yPos + rad > pipeArray[i].pipeYpoints.bottomPipeY)||
  (ball.xPos + rad > pipeArray[i].pipeX) && (ball.yPos + rad > pipeArray[i].pipeYpoints.bottomPipeY) ||
