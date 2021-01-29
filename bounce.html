@@ -3,16 +3,19 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="bounce.css">
-    <title></title>
+    <title> Floopy Birb </title>
+    <!-- This adds the name of my game in the tab -->
+    <link rel="icon" href="birb.png">
+    <!-- This adds the icon on top of the browser -->
   </head>
   <body>
+    <p id="score"> 0 </p>
     <center>
-      <p id="score"> Score = 0 </p>
-      <!-- links score from javascript and so whenever ball passes through
-      gap in the pipes, the score will increase by 1 and this shows the increase
-      in points on the actual screen-->
-    <canvas id="myCanvas" width="1000" height="500"></canvas>
-  </center>
+      <canvas id="myCanvas" width="1000" height="500"></canvas>
+    </center>
+    <!-- links score from javascript and so whenever ball passes through
+    gap in the pipes, the score will increase by 1 and this shows the increase
+    in points on the actual screen-->
   </body>
   <script src="javascript.js"></script>
 </html>

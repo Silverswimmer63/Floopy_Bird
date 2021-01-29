@@ -118,7 +118,7 @@ function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, 
   if ((ball.xPos + ball.xMove + ball.rad > lowRectX) && (ball.xPos + ball.xMove + ball.rad < lowRectX + 2)) {//Checks to see if the ball has passed through the gap between the pipes
     score ++; //if it did, add a point to the score
     console.log(score); //log the score so it is visible and we can keep track of it
-    document.getElementById('score').innerHTML = "Score = " + score;//shows the points (and updated points) on the top center of the screen
+    document.getElementById('score').innerHTML = score;//shows the points (and updated points) on the top center of the screen
   }
   //alert("GAME OVER! Your score is " + score + ". Refresh the screen to play again."); //if there is contact, game ends and send up an alert box telling you to start over and your score
   if ((ball.xPos + ball.xMove + ball.rad > upRectX) && (ball.yPos + ball.rad < upRectHeight) && (ball.rad + ball.xPos < upRectX + upRectWid)) { //checks for collision with the top pipe on the left side
