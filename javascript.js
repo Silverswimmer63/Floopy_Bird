@@ -20,6 +20,7 @@ var difficultTimer = 0; //keeps track of the 'time' so we know how frequent the 
 var score = 0; //starts off the score/points you have when you play the game (ie. add 1 when you pass through the gap)
 var spaceDifficulty = 400; //the "amount of space between the pipes". In reality, it's how frequent the pipes are made one after the other.
 var imageCounter = 0;
+var gameState = 0;
 
 var img = new Image(); //basically creates the image
 img.onload = function(){ //uploads the image onto the screen
@@ -38,6 +39,36 @@ imgDown.onload = function(){ //uploads the image onto the screen
   drawCircle(); //uses a function from below
 }
 imgDown.src="birbDown.png"; //source for where the image is coming from
+
+var imgStart = new Image(); //basically creates the image
+imgStart.onload = function(){ //uploads the image onto the screen
+  drawStart(); //uses a function from below
+}
+imgStart.src="start.png"; //source for where the image is coming from
+
+var imgEnd = new Image(); //basically creates the image
+imgEnd.onload = function(){ //uploads the image onto the screen
+  drawEnd(); //uses a function from below
+}
+imgEnd.src="end.png"; //source for where the image is coming from
+
+function drawStart() {
+ ctx.save();
+ ctx.beginPath();
+ ctx.drawImage(imgStart, 300, 80, 400, 500); //parameters for drawing the bird
+ ctx.fill(); //fills the image/drawing
+ ctx.stroke(); //finishes the drawing
+ ctx.restore();
+}
+
+function drawEnd() {
+ ctx.save();
+ ctx.beginPath();
+ ctx.drawImage(imgEnd, 300, 80, 400, 400); //parameters for drawing the bird
+ ctx.fill(); //fills the image/drawing
+ ctx.stroke(); //finishes the drawing
+ ctx.restore();
+}
 
  //this function draws the birb on the screen
 function drawCircle() {
@@ -122,80 +153,88 @@ function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, 
   }
   //alert("GAME OVER! Your score is " + score + ". Refresh the screen to play again."); //if there is contact, game ends and send up an alert box telling you to start over and your score
   if ((ball.xPos + ball.xMove + ball.rad > upRectX) && (ball.yPos + ball.rad < upRectHeight) && (ball.rad + ball.xPos < upRectX + upRectWid)) { //checks for collision with the top pipe on the left side
-    alert("GAME OVER! Your score is " + score + ". Refresh the screen to play again."); //if there is contact, game ends and send up an alert box telling you to start over and your score
+    gameState = 2;
   }
   if ((ball.yPos + ball.yMove - ball.rad < upRectHeight) && (ball.xPos + ball.rad < upRectWid + upRectX + 50) && (ball.rad + ball.xPos > upRectX)) { //checks for collision with the bottom of the top pipe
-    alert("GAME OVER! Your score is " + score + ". Refresh the screen to play again."); //if there is contact, game ends and send up an alert box telling you to start over and your score
+    gameState = 2;
   }
   if ((ball.xPos + ball.xMove + ball.rad > lowRectX) && (ball.yPos + ball.rad > lowRectY) && (ball.rad + ball.xPos < lowRectX + lowRectWid)) { //checks for the collision with the bottom pipe on the left side
-    alert("GAME OVER! Your score is " + score + ". Refresh the screen to play again."); //if there is contact, game ends and send up an alert box telling you to start over and your score
+    gameState = 2;
   }
   if ((ball.yPos + ball.yMove + ball.rad > lowRectY) && (ball.xPos + ball.rad < lowRectWid + lowRectX + 50) && (ball.rad + ball.xPos > lowRectX)) { //checks for collision with the top of the bottom pipe
-    alert("GAME OVER! Your score is " + score + ". Refresh the screen to play again."); //if there is contact, game ends and send up an alert box telling you to start over and your score
+    gameState = 2;
   }
 }
 //this function uses the functions above to actually draw the shapes onto the canvas/screen
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); //clears the screen
-  makePipe(rectLower.xPos, rectLower.yPos, rectLower.width, rectLower.height, rectUpper.xPos, rectUpper.yPos, rectUpper.width, rectUpper.height); //draws the pipes
-  if (difficultTimer == 1000) { //checks for that timer value before implementing what's inside
-    spaceDifficulty = spaceDifficulty - 40; //decreases the amount of time pipes are showing up, thereby decreasing the space between them
-    if (spaceDifficulty < 200) { //this restricts the pipes from getting too close and overlapping each other or else it would be impossible to continue playing
-      spaceDifficulty = 200;
+  if (gameState == 0) {
+    drawStart();
+  }
+  if (gameState == 1) {
+    makePipe(rectLower.xPos, rectLower.yPos, rectLower.width, rectLower.height, rectUpper.xPos, rectUpper.yPos, rectUpper.width, rectUpper.height); //draws the pipes
+    if (difficultTimer == 1000) { //checks for that timer value before implementing what's inside
+      spaceDifficulty = spaceDifficulty - 40; //decreases the amount of time pipes are showing up, thereby decreasing the space between them
+      if (spaceDifficulty < 200) { //this restricts the pipes from getting too close and overlapping each other or else it would be impossible to continue playing
+        spaceDifficulty = 200;
+      }
+      difficultTimer = 0; //resets the timer
     }
-    difficultTimer = 0; //resets the timer
-  }
-  if (timer == spaceDifficulty) { //checks how frequently the pipes should be made
-    var chance = Math.floor(Math.random() * (1 - 4) + 4); //1 out of 3 chances
-    if (chance == 1) { //this if makes the tubes equal so that the gap is in the middle
-      var rectHUp = Math.floor(Math.random() * (190 - 150) + 150); //gives you a random number between 150-190 for the height of the rectangle being drawn
-      var rectHLow = Math.floor(Math.random() * (190 - 150) + 150); //gives you a random number between 150-190 for the height of the rectangle being drawn
+    if (timer == spaceDifficulty) { //checks how frequently the pipes should be made
+      var chance = Math.floor(Math.random() * (1 - 4) + 4); //1 out of 3 chances
+      if (chance == 1) { //this if makes the tubes equal so that the gap is in the middle
+        var rectHUp = Math.floor(Math.random() * (190 - 150) + 150); //gives you a random number between 150-190 for the height of the rectangle being drawn
+        var rectHLow = Math.floor(Math.random() * (190 - 150) + 150); //gives you a random number between 150-190 for the height of the rectangle being drawn
+      }
+      if (chance == 2) { //this if makes the bottom tube smaller and the top tube larger (height wise) so that the gap is near the bottom of the screen
+        var rectHUp = Math.floor(Math.random() * (310 - 290) + 290); //gives you a random number between 290-310 for the height of the rectangle being drawn
+        var rectHLow = Math.floor(Math.random() * (90 - 70) + 70); //gives you a random number between 70-90 for the height of the rectangle being drawn
+      }
+      if (chance == 3) { //this if makes the bottom tube larger and top tube smaller (height wise) so that the gap is near the top of the screen
+        var rectHUp = Math.floor(Math.random() * (90 - 70) + 70); //gives you a random number between 70-90 for the height of the rectangle being drawn
+        var rectHLow = Math.floor(Math.random() * (310 - 290) + 290); //gives you a random number between 290-310 for the height of the rectangle being drawn
+      }
+      var rectW = Math.floor(Math.random() * (125 - 100) + 100); //gives you a random number between 100-125 for the width of the rectangle being drawn
+      var newRect = {xPosL: c.width-rectW, yPosL: c.height-rectHLow, widthL: rectW, heightL: rectHLow, xPosU: c.width-rectW, yPosU: 0, widthU: rectW, heightU: rectHUp}; //stores specification for a 'set' of pipes
+      rectArray.push(newRect); //pushes the set of pipe into an array so it can be used later in a for loop to access and go through
+      timer = 0; //restarts the timer
     }
-    if (chance == 2) { //this if makes the bottom tube smaller and the top tube larger (height wise) so that the gap is near the bottom of the screen
-      var rectHUp = Math.floor(Math.random() * (310 - 290) + 290); //gives you a random number between 290-310 for the height of the rectangle being drawn
-      var rectHLow = Math.floor(Math.random() * (90 - 70) + 70); //gives you a random number between 70-90 for the height of the rectangle being drawn
+    for (var i = 0; i < rectArray.length; i++) { //goes through the array and makes new pipes (or adds on pipe) to show on screen using makePipe too
+      makePipe(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU); //draws the pipes
+      rectArray[i].xPosL --; //gives illusion of moving rectangles from the right to left
+      rectArray[i].xPosU --; //gives illusion of moving rectangles from the right to left
     }
-    if (chance == 3) { //this if makes the bottom tube larger and top tube smaller (height wise) so that the gap is near the top of the screen
-      var rectHUp = Math.floor(Math.random() * (90 - 70) + 70); //gives you a random number between 70-90 for the height of the rectangle being drawn
-      var rectHLow = Math.floor(Math.random() * (310 - 290) + 290); //gives you a random number between 290-310 for the height of the rectangle being drawn
+    drawCircle(); //draws the circle
+    if (ball.xPos + ball.xMove > c.width - ball.rad || ball.xPos + ball.xMove < ball.rad) { //checks to make sure the ball doesn't go outside of the screen in the x-direction
+      ball.xMove = -ball.xMove; //if it does, make the ball go the opposite direction to make it stay inside
     }
-    var rectW = Math.floor(Math.random() * (125 - 100) + 100); //gives you a random number between 100-125 for the width of the rectangle being drawn
-    var newRect = {xPosL: c.width-rectW, yPosL: c.height-rectHLow, widthL: rectW, heightL: rectHLow, xPosU: c.width-rectW, yPosU: 0, widthU: rectW, heightU: rectHUp}; //stores specification for a 'set' of pipes
-    rectArray.push(newRect); //pushes the set of pipe into an array so it can be used later in a for loop to access and go through
-    timer = 0; //restarts the timer
+    if (ball.yPos + ball.yMove > c.height - ball.rad || ball.yPos + ball.yMove < ball.rad) { //checks to make sure the ball doesn't go outside of the screen in the y-direction
+      ball.yMove = -ball.yMove * damping; //if it does, make the ball go the opposite direction to make it stay inside
+      //damping is used to make the ball's height shorter after each bounce
+    }
+    ball.yMove += gravity; //gravity is added to make ball come down and bounce again
+    ball.xPos = 250; //allows the ball to move from left to right
+    if (ball.yMove < -1) {
+      imageCounter = 1;
+    }
+    else if (ball.yMove > 2) {
+      imageCounter = 2;
+    }
+    else {
+      imageCounter = 0;
+    }
+    if (((ball.yPos + ball.yMove) + ball.rad) <= c.height) { //makes sure that the ball doesn't 'sink' into the ground when it's rolling back and forth along the ground
+      ball.yPos += ball.yMove;
+    }
+    for (var i = 0; i < rectArray.length; i++) { //checks for collision in the new pipes created and stored
+      collisionCheck(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU);
+    }
+    timer ++; //increments so that the timer will eventually equal 300 and implement the if
+    difficultTimer ++;
   }
-  for (var i = 0; i < rectArray.length; i++) { //goes through the array and makes new pipes (or adds on pipe) to show on screen using makePipe too
-    makePipe(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU); //draws the pipes
-    rectArray[i].xPosL --; //gives illusion of moving rectangles from the right to left
-    rectArray[i].xPosU --; //gives illusion of moving rectangles from the right to left
+  if (gameState == 2) {
+    drawEnd();
   }
-  drawCircle(); //draws the circle
-  if (ball.xPos + ball.xMove > c.width - ball.rad || ball.xPos + ball.xMove < ball.rad) { //checks to make sure the ball doesn't go outside of the screen in the x-direction
-    ball.xMove = -ball.xMove; //if it does, make the ball go the opposite direction to make it stay inside
-  }
-  if (ball.yPos + ball.yMove > c.height - ball.rad || ball.yPos + ball.yMove < ball.rad) { //checks to make sure the ball doesn't go outside of the screen in the y-direction
-    ball.yMove = -ball.yMove * damping; //if it does, make the ball go the opposite direction to make it stay inside
-    //damping is used to make the ball's height shorter after each bounce
-  }
-  ball.yMove += gravity; //gravity is added to make ball come down and bounce again
-  ball.xPos = 250; //allows the ball to move from left to right
-  if (ball.yMove < -1) {
-    imageCounter = 1;
-  }
-  else if (ball.yMove > 2) {
-    imageCounter = 2;
-  }
-  else {
-    imageCounter = 0;
-  }
-  if (((ball.yPos + ball.yMove) + ball.rad) <= c.height) { //makes sure that the ball doesn't 'sink' into the ground when it's rolling back and forth along the ground
-    ball.yPos += ball.yMove;
-  }
-  for (var i = 0; i < rectArray.length; i++) { //checks for collision in the new pipes created and stored
-    collisionCheck(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU);
-  }
-  timer ++; //increments so that the timer will eventually equal 300 and implement the if
-  difficultTimer ++;
 }
 
 setInterval(draw, 10); //like a loop that repeats the draw function to keep drawing the shapes after 10 milliseconds
@@ -206,6 +245,6 @@ function makeBounce(e) { //this function makes the ball bounce (or change direct
     ball.yMove -= 5; //the amount the ball is changing directions by to give illusion of bounce
   }
   if (e.key == "r") { //if 'r' key is pressed, then ball will change direction
-    ball.xMove = -ball.xMove; //it goes the opposite direction the ball was initally going in the x direction
+    gameState = 1;
   }
 }
