@@ -50,7 +50,7 @@ var imgEnd = new Image(); //basically creates the image
 imgEnd.onload = function(){ //uploads the image onto the screen
   drawEnd(); //uses a function from below
 }
-imgEnd.src="end.png"; //source for where the image is coming from
+imgEnd.src="gameover.png"; //source for where the image is coming from
 
 function drawStart() {
  ctx.save();
@@ -64,7 +64,7 @@ function drawStart() {
 function drawEnd() {
  ctx.save();
  ctx.beginPath();
- ctx.drawImage(imgEnd, 300, 80, 400, 400); //parameters for drawing the bird
+ ctx.drawImage(imgEnd, 300, 0, 400, 400); //parameters for drawing the bird
  ctx.fill(); //fills the image/drawing
  ctx.stroke(); //finishes the drawing
  ctx.restore();
@@ -149,9 +149,8 @@ function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, 
   if ((ball.xPos + ball.xMove + ball.rad > lowRectX) && (ball.xPos + ball.xMove + ball.rad < lowRectX + 2)) {//Checks to see if the ball has passed through the gap between the pipes
     score ++; //if it did, add a point to the score
     console.log(score); //log the score so it is visible and we can keep track of it
-    document.getElementById('score').innerHTML = score;//shows the points (and updated points) on the top center of the screen
+    document.getElementById('score').innerHTML = "Score: " + score; //shows the points (and updated points) on the top center of the screen
   }
-  //alert("GAME OVER! Your score is " + score + ". Refresh the screen to play again."); //if there is contact, game ends and send up an alert box telling you to start over and your score
   if ((ball.xPos + ball.xMove + ball.rad > upRectX) && (ball.yPos + ball.rad < upRectHeight) && (ball.rad + ball.xPos < upRectX + upRectWid)) { //checks for collision with the top pipe on the left side
     gameState = 2;
   }
@@ -239,12 +238,19 @@ function draw() {
 
 setInterval(draw, 10); //like a loop that repeats the draw function to keep drawing the shapes after 10 milliseconds
 
-document.addEventListener("keydown", makeBounce); //allows users to hit a key on keyboard to interact with the objects
+document.addEventListener("keydown", makeBounce); //addEventListenerws users to hit a key on keyboard to interact with the objects
 function makeBounce(e) { //this function makes the ball bounce (or change direction in the x direction) when a key is pressed
-  if (e.key == " ") { //if space bar is hit, then ball will bounce
+  if ((e.key == " ") && (gameState != 2)) { //if space bar is hit, then ball will bounce
     ball.yMove -= 5; //the amount the ball is changing directions by to give illusion of bounce
-  }
-  if (e.key == "r") { //if 'r' key is pressed, then ball will change direction
     gameState = 1;
   }
+  if (e.key == "x") {
+    window.location.reload();
+  }
 }
+c.addEventListener('click', function(event) {
+  if (gameState != 2) {
+    ball.yMove -= 5; //the amount the ball is changing directions by to give illusion of bounce
+    gameState = 1;
+  }
+})
