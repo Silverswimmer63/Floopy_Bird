@@ -5,17 +5,17 @@ var ctx = c.getContext("2d");
 var ball = {x: c.width/2, y: c.height/2, ballSize: 15}
 var dx = 0; //These variables will be used later to change the position of the circle.
 var dy = 10; //Changing both of these numbers will also change the speed of the circle (in other words, how many units the circle moves per frame).
-var gravity = .15; //Sets the gravity pulling the ball to the ground.
+var gravity = .07; //Sets the gravity pulling the ball to the ground.
 var damping = 0.75; //The rate at which the ball slows down.
 var rectWidth = Math.floor(Math.random() * (125 - 100) + 100);//gives a random width for the pipe
 var rectHeight = Math.floor(Math.random() * (190 - 170) + 170);//gives a random height for the pipe
 var rectLower = {xPos: c.width - rectWidth, yPos: c.height - rectWidth, width: rectWidth, height: rectHeight};//creates the base of the pipe
 var rectUpper = {xPos: c.width - rectWidth, yPos: 0, width: rectWidth, height: rectHeight};//creates the top pipe
-var rectArray = [];
-var timer = 0; //
-var difficultTimer = 0; //
-var score = 0; //
-var spaceDifficulty = 400; //
+var rectArray = [];//used to store multiple pipes on screen
+var timer = 0; //counter for when to create a new pipe`
+var difficultTimer = 0; //keeps track of how frequent pipes should apear on screen
+var score = 0; //tracks how many pipes you have passed through
+var spaceDifficulty = 400; //how frequently the pipes will apear after eachother
 var imageCounter = 0;
 var gameState = 1;
 
@@ -55,37 +55,24 @@ function makePipe(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, upRect
   }
 }
 
+//This function checks for collision with the pipes and if the ball has passed trought a pipe
 function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, upRectY, upRectWid, upRectHeight) {
-  /*these ifs are the collision
-  if (x < lowerRect.x + lowerRect.width && x + ballSize > lowerRect.x && y < lowerRect.y + lowerRect.height && y + ballSize > lowerRect.y) {//checks if ball collides with pipe base
-    location.reload();//if yes, reloads the page
+  if ((ball.x + dx + ball.ballSize > lowRectX) && (ball.x + dx + ball.ballSize < lowRectX + 2)) {//checks if the ball has passed between the pipes
+    score ++; //it yes, add one to score
+    console.log(score); //log the score in the console
+    document.getElementById('score').innerHTML = "Score = " + score;// shows the score on the screen
   }
-  if (x < lowerPipeTop.x + lowerPipeTop.width && x + ballSize > lowerPipeTop.x && y < lowerPipeTop.y + lowerPipeTop.height && y + ballSize > lowerPipeTop.y) {//checks if ball collides with pipe top
-    location.reload();//if yes, reloads the page
+  if ((ball.x + dx + ball.ballSize > upRectX) && (ball.y + ball.ballSize < upRectHeight) && (ball.ballSize + ball.x < upRectX + upRectWid)) { //checks for collision with the top pipe on the left side
+    gameState = 2;//if true, ends the game
   }
-  if (x < upperRect.x + upperRect.width && x + ballSize > upperRect.x && y < upperRect.y + upperRect.height && y + ballSize > upperRect.y) {//checks if ball collides with pipe base
-    location.reload();//if yes, reloads the page
+  if ((ball.y + dy - ball.ballSize < upRectHeight) && (ball.x + ball.ballSize < upRectWid + upRectX + 50) && (ball.ballSize + ball.x > upRectX)) { //checks for collision with the bottom of the top pipe
+    gameState = 2;//if true, ends the game
   }
-  if (x < upperPipeTop.x + upperPipeTop.width && x + ballSize > upperPipeTop.x && y < upperPipeTop.y + upperPipeTop.height && y - ballSize > upperPipeTop.y) {//checks if ball collides with pipe top
-    location.reload();//if yes, reloads the page
+  if ((ball.x + dx + ball.ballSize > lowRectX) && (ball.y + ball.ballSize > lowRectY) && (ball.ballSize + ball.x < lowRectX + lowRectWid)) { //checks for the collision with the bottom pipe on the left side
+    gameState = 2;//if true, ends the game
   }
-  */
-  if ((ball.xPos + ball.xMove + ball.rad > lowRectX) && (ball.xPos + ball.xMove + ball.rad < lowRectX + 2)) {//
-    score ++; //
-    console.log(score); //
-    document.getElementById('score').innerHTML = score;//
-  }
-  if ((ball.x + ball.dx + ball.ballSize > upRectX) && (ball.y + ball.ballSize < upRectHeight) && (ball.ballSize + ball.x < upRectX + upRectWid)) { //checks for collision with the top pipe on the left side
-    gameState = 2;
-  }
-  if ((ball.y + ball.dy - ball.ballSize < upRectHeight) && (ball.x + ball.ballSize < upRectWid + upRectX + 50) && (ball.rad + ball.xPos > upRectX)) { //checks for collision with the bottom of the top pipe
-    gameState = 2;
-  }
-  if ((ball.xPos + ball.xMove + ball.rad > lowRectX) && (ball.yPos + ball.rad > lowRectY) && (ball.rad + ball.xPos < lowRectX + lowRectWid)) { //checks for the collision with the bottom pipe on the left side
-    gameState = 2;
-  }
-  if ((ball.yPos + ball.yMove + ball.rad > lowRectY) && (ball.xPos + ball.rad < lowRectWid + lowRectX + 50) && (ball.rad + ball.xPos > lowRectX)) { //checks for collision with the top of the bottom pipe
-    gameState = 2;
+  if ((ball.y + dy + ball.ballSize > lowRectY) && (ball.x + ball.ballSize < lowRectWid + lowRectX + 50) && (ball.ballSize + ball.x > lowRectX)) { //checks for collision with the top of the bottom pipe
+    gameState = 2;//if true, ends the game
   }
 }
 
@@ -145,16 +132,16 @@ function draw() {
     difficultTimer ++;
   }
   if (gameState == 2) {
-    //location.reload();
+    location.reload();
   }
 }
 
-setInterval(draw, 15);//makes the game run
+setInterval(draw, 10);//makes the game run
 
 document.addEventListener("keydown", makeBounce);//listens for a key press
 function makeBounce(e) {
  if (e.key == " ") {//if the spacebar is pressed the ball gains y velcity
-   dy -= 5;
+   dy -= 3;
  }
  if (e.key == "r") {//if thr "r" key is pressed the x direction is flipped
    gameState == 1;
