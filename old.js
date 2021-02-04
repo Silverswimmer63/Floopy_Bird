@@ -90,46 +90,45 @@ function draw() {
     }
     if (timer == spaceDifficulty) {//checnksn the frequencey at which pipes are made
       var chance = Math.floor(Math.random() * (1 - 4) + 4);// 1 out of 3 chance to draw a pipe of a random height
-      if (chance == 1) {
-        var rectHUp = Math.floor(Math.random() * (190 - 150) + 150);
-        var rectHLow = Math.floor(Math.random() * (190 - 150) + 150);
+      if (chance == 1) {//makes a gap between the pipes
+        var rectHUp = Math.floor(Math.random() * (190 - 150) + 150);//randomly generates the height of the pipe
+        var rectHLow = Math.floor(Math.random() * (190 - 150) + 150);//randomly generates the height of the pipe
       }
-      if (chance == 2) {
-        var rectHUp = Math.floor(Math.random() * (310 - 290) + 290);
-        var rectHLow = Math.floor(Math.random() * (90 - 70) + 70);
+      if (chance == 2) {//this makes the pipe gap closer to the bottom of the screen
+        var rectHUp = Math.floor(Math.random() * (310 - 290) + 290);//randomly generates the height of the pipe
+        var rectHLow = Math.floor(Math.random() * (90 - 70) + 70);//randomly generates the height of the pipe
       }
-      if (chance == 3) {
-        var rectHUp = Math.floor(Math.random() * (90 - 70) + 70);
-        var rectHLow = Math.floor(Math.random() * (310 - 290) + 290);
+      if (chance == 3) {//this makes the pipe gap closer to the top of the screen
+        var rectHUp = Math.floor(Math.random() * (90 - 70) + 70);//randomly generates the height of the pipe
+        var rectHLow = Math.floor(Math.random() * (310 - 290) + 290);//randomly generates the height of the pipe
       }
-      var rectW = Math.floor(Math.random() * (125 - 100) + 100);
-      var newRect = {xPosL: c.width-rectW, yPosL: c.height-rectHLow, widthL: rectW, heightL: rectHLow, xPosU: c.width-rectW, yPosU: 0, widthU: rectW, heightU: rectHUp};
-      rectArray.push(newRect);
-      timer = 0;
+      var rectW = Math.floor(Math.random() * (125 - 100) + 100);//gives a random width for the rectangle
+      var newRect = {xPosL: c.width-rectW, yPosL: c.height-rectHLow, widthL: rectW, heightL: rectHLow, xPosU: c.width-rectW, yPosU: 0, widthU: rectW, heightU: rectHUp};//has the info to draw a top and bottom pipe
+      rectArray.push(newRect);//pushes the newly created pipe into to be used later in a loop
+      timer = 0;//resets the timer
     }
-    for (var i = 0; i < rectArray.length; i++) {
-      makePipe(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU);
-      rectArray[i].xPosL --;
-      rectArray[i].xPosU --;
+    for (var i = 0; i < rectArray.length; i++) {//uses rectArray to draw the new pipes on screen
+      makePipe(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU);//draws the pipes
+      rectArray[i].xPosL --;//allows the pipes to move from right to left
+      rectArray[i].xPosU --;//allows the pipes to move from right to left
     }
-    drawCircle();
+    drawCircle();//draws the ball
     if (ball.x + dx > c.width - ball.ballSize || ball.x + dx < ball.ballSize) { //If the circle's x position exceeds the width of the canvas...
       dx = -dx; //The ball's x direction will be flipped, and it will bounce a specific distance (damping).
     }
     if(ball.y + dy > c.height - ball.ballSize || ball.y + dy < ball.ballSize) { //If the circle's y position exceeds the height of the canvas...
       dy = -dy * damping; //Its y direction will be flipped, and it's speed will decrease.
-      //location.reload();//if yes, reloads the page
     }
     dy += gravity; //Adds the gravity value to the ball's dy value, giving it a artificial force of gravity.
     ball.x += dx;
-    if (((ball.y + dy) + ball.ballSize) <= c.height) {
+    if (((ball.y + dy) + ball.ballSize) <= c.height) {//prevents the ball from falling off the canvas
       ball.y += dy;
     }
-    for (var i = 0; i < rectArray.length; i++) {
+    for (var i = 0; i < rectArray.length; i++) {//checks to see if the ball is colliding with the pipes
       collisionCheck(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU);
     }
-    timer ++;
-    difficultTimer ++;
+    timer ++;//increments the timmer to make the pipe placement closer
+    difficultTimer ++;//increments to increase the difficulty
   }
   if (gameState == 2) {
     location.reload();
