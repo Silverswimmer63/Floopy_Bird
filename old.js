@@ -80,16 +80,16 @@ function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, 
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); //Clears the canvas every frame, so a new circle can be drawn.
   if (gameState == 1) {
-    makePipe(rectLower.xPos, rectLower.yPos, rectLower.width, rectLower.height, rectUpper.xPos, rectUpper.yPos, rectUpper.width, rectUpper.height);
-    if (difficultTimer == 1000) {
-      spaceDifficulty = spaceDifficulty - 40;
-      if (spaceDifficulty < 200) {
+    makePipe(rectLower.xPos, rectLower.yPos, rectLower.width, rectLower.height, rectUpper.xPos, rectUpper.yPos, rectUpper.width, rectUpper.height);//draws the pipes
+    if (difficultTimer == 1000) {//checks the timmer to see how difficult to make the game
+      spaceDifficulty = spaceDifficulty - 40;//decreases the space between pipes
+      if (spaceDifficulty < 200) {//prevents the pipes from getting to close
         spaceDifficulty = 200;
       }
-      difficultTimer = 0;
+      difficultTimer = 0;//resets the difficulty
     }
-    if (timer == spaceDifficulty) {
-      var chance = Math.floor(Math.random() * (1 - 4) + 4);
+    if (timer == spaceDifficulty) {//checnksn the frequencey at which pipes are made
+      var chance = Math.floor(Math.random() * (1 - 4) + 4);// 1 out of 3 chance to draw a pipe of a random height
       if (chance == 1) {
         var rectHUp = Math.floor(Math.random() * (190 - 150) + 150);
         var rectHLow = Math.floor(Math.random() * (190 - 150) + 150);
