@@ -19,24 +19,24 @@ var timer = 0; //basically a counter for when to make a new pipe
 var difficultTimer = 0; //keeps track of the 'time' so we know how frequent the pipes should be made and appear on the screen
 var score = 0; //starts off the score/points you have when you play the game (ie. add 1 when you pass through the gap)
 var spaceDifficulty = 400; //the "amount of space between the pipes". In reality, it's how frequent the pipes are made one after the other.
-var imageCounter = 0;
-var gameState = 0;
+var imageCounter = 0; //keeps track of when to change the bird's image for 'animation'. 0 = regular/normal state, 1 = bird looks up, and 2 = bird looks down
+var gameState = 0; //keeps track of when to change the canvas screen. 0 = use start screen, 1 = draw birb and pipes, 2 = use game over screen
 
 var img = new Image(); //basically creates the image
 img.onload = function(){ //uploads the image onto the screen
-  drawCircle(); //uses a function from below
+  drawBirb(); //uses a function from below
 }
 img.src="birb.png"; //source for where the image is coming from
 
 var imgUp = new Image(); //basically creates the image
 imgUp.onload = function(){ //uploads the image onto the screen
-  drawCircle(); //uses a function from below
+  drawBirb(); //uses a function from below
 }
 imgUp.src="birbUp.png"; //source for where the image is coming from
 
 var imgDown = new Image(); //basically creates the image
 imgDown.onload = function(){ //uploads the image onto the screen
-  drawCircle(); //uses a function from below
+  drawBirb(); //uses a function from below
 }
 imgDown.src="birbDown.png"; //source for where the image is coming from
 
@@ -52,45 +52,44 @@ imgEnd.onload = function(){ //uploads the image onto the screen
 }
 imgEnd.src="gameover.png"; //source for where the image is coming from
 
+// drawStart() - draws the start screen of the game
 function drawStart() {
- ctx.save();
- ctx.beginPath();
+ ctx.save(); //saves the present condition/state of the image/game
+ ctx.beginPath(); //starts the drawing
  ctx.drawImage(imgStart, 300, 80, 400, 500); //parameters for drawing the bird
  ctx.fill(); //fills the image/drawing
  ctx.stroke(); //finishes the drawing
- ctx.restore();
+ ctx.restore(); //reuses the saved image
 }
 
+//drawEnd() - draws the game over screen of the game
 function drawEnd() {
- ctx.save();
- ctx.beginPath();
+ ctx.save(); //saves the present condition/state of the image/game
+ ctx.beginPath(); //starts drawing the screen
  ctx.drawImage(imgEnd, 300, 0, 400, 400); //parameters for drawing the bird
  ctx.fill(); //fills the image/drawing
  ctx.stroke(); //finishes the drawing
- ctx.restore();
+ ctx.restore(); //reuses the saved image
 }
 
- //this function draws the birb on the screen
-function drawCircle() {
- ctx.save();
+//this function draws the birb on the screen
+function drawBirb() {
+ ctx.save(); //saves the present condition/state of the image/game
  ctx.beginPath(); //starts the drawing
- if (imageCounter == 0) {
+ if (imageCounter == 0) { //this if draws the bird in the regular position/straight horizontally
    ctx.drawImage(img, ball.xPos-ball.rad-10, ball.yPos-ball.rad-10, ball.rad+40, ball.rad+20); //parameters for drawing the bird
  }
- if (imageCounter == 1) {
+ if (imageCounter == 1) { //this if draws the bird rotated up so it looks like it's looking at the sky
    ctx.drawImage(imgUp, ball.xPos-ball.rad-10, ball.yPos-ball.rad-10, ball.rad+40, ball.rad+40); //parameters for drawing the bird
 
  }
- if (imageCounter == 2) {
+ if (imageCounter == 2) { //this if draws the bird rotated down so it looks like it's looking at the ground
    ctx.drawImage(imgDown, ball.xPos-ball.rad-10, ball.yPos-ball.rad-10, ball.rad+40, ball.rad+40); //parameters for drawing the bird
  }
  ctx.fill(); //fills the image/drawing
  ctx.stroke(); //finishes the drawing
- ctx.restore();
+ ctx.restore(); //reuses the saved image
 }
-
-//ctx.drawImage(img, (ball.xPos-(ball.rad+12)),(ball.yPos-(ball.rad+18)),(ball.rad)+30,(ball.rad)+30);//Atemping to drawing an image
-
 
 /* makePipe(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, upRectY, upRectWid, upRectHeight)
 @param lowRectX {obj}- x position of the long, bottom tube
@@ -152,30 +151,31 @@ function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, 
     document.getElementById('score').innerHTML = "Score: " + score; //shows the points (and updated points) on the top center of the screen
   }
   if ((ball.xPos + ball.xMove + ball.rad > upRectX) && (ball.yPos + ball.rad < upRectHeight) && (ball.rad + ball.xPos < upRectX + upRectWid)) { //checks for collision with the top pipe on the left side
-    gameState = 2;
+    gameState = 2; //if there's collision, change the image on the screen to the gameover screen because you lost
   }
   if ((ball.yPos + ball.yMove - ball.rad < upRectHeight) && (ball.xPos + ball.rad < upRectWid + upRectX + 50) && (ball.rad + ball.xPos > upRectX)) { //checks for collision with the bottom of the top pipe
-    gameState = 2;
+    gameState = 2; //if there's collision, change the image on the screen to the gameover screen because you lost
   }
   if ((ball.xPos + ball.xMove + ball.rad > lowRectX) && (ball.yPos + ball.rad > lowRectY) && (ball.rad + ball.xPos < lowRectX + lowRectWid)) { //checks for the collision with the bottom pipe on the left side
-    gameState = 2;
+    gameState = 2; //if there's collision, change the image on the screen to the gameover screen because you lost
   }
   if ((ball.yPos + ball.yMove + ball.rad > lowRectY) && (ball.xPos + ball.rad < lowRectWid + lowRectX + 50) && (ball.rad + ball.xPos > lowRectX)) { //checks for collision with the top of the bottom pipe
-    gameState = 2;
+    gameState = 2; //if there's collision, change the image on the screen to the gameover screen because you lost
   }
 }
-//this function uses the functions above to actually draw the shapes onto the canvas/screen
+
+//this function uses the functions above to actually draw the shapes, birb, and the start and end screen onto the canvas/screen
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); //clears the screen
-  if (gameState == 0) {
-    drawStart();
+  if (gameState == 0) { //already naturally set to this so that players can see the start screen first
+    drawStart(); //calls the functions that draws the start screen of the game
   }
-  if (gameState == 1) {
+  if (gameState == 1) { //this draws the actual game (birb and pipes)
     makePipe(rectLower.xPos, rectLower.yPos, rectLower.width, rectLower.height, rectUpper.xPos, rectUpper.yPos, rectUpper.width, rectUpper.height); //draws the pipes
     if (difficultTimer == 1000) { //checks for that timer value before implementing what's inside
       spaceDifficulty = spaceDifficulty - 40; //decreases the amount of time pipes are showing up, thereby decreasing the space between them
       if (spaceDifficulty < 200) { //this restricts the pipes from getting too close and overlapping each other or else it would be impossible to continue playing
-        spaceDifficulty = 200;
+        spaceDifficulty = 200; //this makes sure that the pipes are not too close together or else it glitches, overlaps, and the game is not playable anymore
       }
       difficultTimer = 0; //resets the timer
     }
@@ -203,7 +203,7 @@ function draw() {
       rectArray[i].xPosL --; //gives illusion of moving rectangles from the right to left
       rectArray[i].xPosU --; //gives illusion of moving rectangles from the right to left
     }
-    drawCircle(); //draws the circle
+    drawBirb(); //draws the birb
     if (ball.xPos + ball.xMove > c.width - ball.rad || ball.xPos + ball.xMove < ball.rad) { //checks to make sure the ball doesn't go outside of the screen in the x-direction
       ball.xMove = -ball.xMove; //if it does, make the ball go the opposite direction to make it stay inside
     }
@@ -213,13 +213,13 @@ function draw() {
     }
     ball.yMove += gravity; //gravity is added to make ball come down and bounce again
     ball.xPos = 250; //allows the ball to move from left to right
-    if (ball.yMove < -1) {
+    if (ball.yMove < -1) { //basically if the birb looks like it's moving up, we use the "birb looking at the sky" image
       imageCounter = 1;
     }
-    else if (ball.yMove > 2) {
+    else if (ball.yMove > 2) { //basically if the birb looks like it's moving down, we use the "birb looking at the ground" image
       imageCounter = 2;
     }
-    else {
+    else { //if the above don't apply, use the natural state of the bird image
       imageCounter = 0;
     }
     if (((ball.yPos + ball.yMove) + ball.rad) <= c.height) { //makes sure that the ball doesn't 'sink' into the ground when it's rolling back and forth along the ground
@@ -229,10 +229,10 @@ function draw() {
       collisionCheck(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU);
     }
     timer ++; //increments so that the timer will eventually equal 300 and implement the if
-    difficultTimer ++;
+    difficultTimer ++; //increments so that the timer will everntually equal the 1000 and implement the if to make the spaceDifficulty smaller, thus making game harder because frequency of pipes increase
   }
-  if (gameState == 2) {
-    drawEnd();
+  if (gameState == 2) { //implements the game over screen if the collision occurs from above
+    drawEnd(); //calls the function that draws the end screen of the game
   }
 }
 
@@ -241,16 +241,17 @@ setInterval(draw, 10); //like a loop that repeats the draw function to keep draw
 document.addEventListener("keydown", makeBounce); //addEventListenerws users to hit a key on keyboard to interact with the objects
 function makeBounce(e) { //this function makes the ball bounce (or change direction in the x direction) when a key is pressed
   if ((e.key == " ") && (gameState != 2)) { //if space bar is hit, then ball will bounce
+    //the (gameState != 2) is necessary to make sure that users can't continue playing the game after they lose by hitting a tube
     ball.yMove -= 5; //the amount the ball is changing directions by to give illusion of bounce
-    gameState = 1;
+    gameState = 1; //this sets the screen of the canvas to one that draws the birb and pipe so you can play the game
   }
-  if (e.key == "x") {
-    window.location.reload();
+  if (e.key == "x") { //if you press the 'x' key, you will reload the page, thus restarting the game
+    window.location.reload(); //this reloads the page
   }
 }
-c.addEventListener('click', function(event) {
-  if (gameState != 2) {
+c.addEventListener('click', function(event) { //this makes it possible for users to use their mouse to make the birb move
+  if (gameState != 2) { //refrains the game to continue if the game is over
     ball.yMove -= 5; //the amount the ball is changing directions by to give illusion of bounce
-    gameState = 1;
+    gameState = 1; //this sets the screen of the canvas to one that draws the birb and pipe so you can play the game
   }
 })
