@@ -7,17 +7,17 @@ var dx = 0; //These variables will be used later to change the position of the c
 var dy = 10; //Changing both of these numbers will also change the speed of the circle (in other words, how many units the circle moves per frame).
 var gravity = .15; //Sets the gravity pulling the ball to the ground.
 var damping = 0.75; //The rate at which the ball slows down.
-var pipeWidth = Math.floor(Math.random() * (125 - 100) + 100);//gives a random width for the pipe
-var pipeHeight = Math.floor(Math.random() * (190 - 170) + 170);//gives a random height for the pipe
-var lowerPipe = {xPos: c.width-pipeWidth, yPos: c.height-pipeHeight, width: pipeWidth, height: pipeHeight};//creates the base of the pipe
-var upperPipe = {xPos: c.width-pipeWidth, yPos: 0, width: pipeWidth, height: pipeHeight};//creates the top pipe
+var rectWidth = Math.floor(Math.random() * (125 - 100) + 100);//gives a random width for the pipe
+var rectHeight = Math.floor(Math.random() * (190 - 170) + 170);//gives a random height for the pipe
+var rectLower = {xPos: c.width - rectWidth, yPos: c.height - rectWidth, width: rectWidth, height: rectHeight};//creates the base of the pipe
+var rectUpper = {xPos: c.width - rectWidth, yPos: 0, width: rectWidth, height: rectHeight};//creates the top pipe
 var rectArray = [];
 var timer = 0; //
 var difficultTimer = 0; //
 var score = 0; //
 var spaceDifficulty = 400; //
 var imageCounter = 0;
-var gameState = 0;
+var gameState = 1;
 
 function drawCircle() {
   ctx.beginPath();
@@ -75,10 +75,10 @@ function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, 
     console.log(score); //
     document.getElementById('score').innerHTML = score;//
   }
-  if ((ball.xPos + ball.xMove + ball.rad > upRectX) && (ball.yPos + ball.rad < upRectHeight) && (ball.rad + ball.xPos < upRectX + upRectWid)) { //checks for collision with the top pipe on the left side
+  if ((ball.x + ball.dx + ball.ballSize > upRectX) && (ball.y + ball.ballSize < upRectHeight) && (ball.ballSize + ball.x < upRectX + upRectWid)) { //checks for collision with the top pipe on the left side
     gameState = 2;
   }
-  if ((ball.yPos + ball.yMove - ball.rad < upRectHeight) && (ball.xPos + ball.rad < upRectWid + upRectX + 50) && (ball.rad + ball.xPos > upRectX)) { //checks for collision with the bottom of the top pipe
+  if ((ball.y + ball.dy - ball.ballSize < upRectHeight) && (ball.x + ball.ballSize < upRectWid + upRectX + 50) && (ball.rad + ball.xPos > upRectX)) { //checks for collision with the bottom of the top pipe
     gameState = 2;
   }
   if ((ball.xPos + ball.xMove + ball.rad > lowRectX) && (ball.yPos + ball.rad > lowRectY) && (ball.rad + ball.xPos < lowRectX + lowRectWid)) { //checks for the collision with the bottom pipe on the left side
@@ -104,8 +104,26 @@ function draw() {
     if (timer == spaceDifficulty) {
       var chance = Math.floor(Math.random() * (1 - 4) + 4);
       if (chance == 1) {
-        var rectHUp = math.floor(Math.random)
+        var rectHUp = Math.floor(Math.random() * (190 - 150) + 150);
+        var rectHLow = Math.floor(Math.random() * (190 - 150) + 150);
       }
+      if (chance == 2) {
+        var rectHUp = Math.floor(Math.random() * (310 - 290) + 290);
+        var rectHLow = Math.floor(Math.random() * (90 - 70) + 70);
+      }
+      if (chance == 3) {
+        var rectHUp = Math.floor(Math.random() * (90 - 70) + 70);
+        var rectHLow = Math.floor(Math.random() * (310 - 290) + 290);
+      }
+      var rectW = Math.floor(Math.random() * (125 - 100) + 100);
+      var newRect = {xPosL: c.width-rectW, yPosL: c.height-rectHLow, widthL: rectW, heightL: rectHLow, xPosU: c.width-rectW, yPosU: 0, widthU: rectW, heightU: rectHUp};
+      rectArray.push(newRect);
+      timer = 0;
+    }
+    for (var i = 0; i < rectArray.length; i++) {
+      makePipe(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU);
+      rectArray[i].xPosL --;
+      rectArray[i].xPosU --;
     }
     drawCircle();
     if (ball.x + dx > c.width - ball.ballSize || ball.x + dx < ball.ballSize) { //If the circle's x position exceeds the width of the canvas...
@@ -120,6 +138,14 @@ function draw() {
     if (((ball.y + dy) + ball.ballSize) <= c.height) {
       ball.y += dy;
     }
+    for (var i = 0; i < rectArray.length; i++) {
+      collisionCheck(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU);
+    }
+    timer ++;
+    difficultTimer ++;
+  }
+  if (gameState == 2) {
+    //location.reload();
   }
 }
 
