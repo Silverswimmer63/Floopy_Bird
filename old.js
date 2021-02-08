@@ -147,5 +147,9 @@ function makeBounce(e) {
  }
 }
 
+function birdJump() {
+  dy -= 3;
+}
+
 //comment for push
 //Got atom and gitkraken working on chromebook 10/10 do not recomend
