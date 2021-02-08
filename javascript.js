@@ -4,7 +4,15 @@
 // {} : restrictions, info, types, ect.
 // {restricted} : states that the said thing is restricted in some way shape or form
 
-var timmer = 0;//making an itterator for time 
+var speedPipes = 1;//speed of pipes dont set it to 9001 it makes computers sad and less than 1 is not good eaither 
+
+var difficulty = 1;//Difficulty keep at one
+
+var timmer = 0;//pipeTimmer 
+
+var secondTimmer = 0;//difficulty timmer
+
+var thirdTimmer = 0;//speed timmer 
 
 var score = 0;//score counter;
 //@variable c [Object] : Canvas elements
@@ -21,7 +29,7 @@ flipFlap.onload = function(){//load the image
  }
  flipFlap.src = "flipFlapBird.png";//this is where the image goes
 //@variable gravity [integer] {retricted :>1} : Gravity control 
-var gravity = 0.15;
+var gravity = 0.1;
 
 //@variable damping [integer] {restricted: >1} : changes the frictional forces on the x value
 var damping = 0.01;
@@ -167,7 +175,7 @@ for (var i = 0; i < pipeArray.length;i++) {
     ctx.fillStyle = "green"; //Sets the color to green.
     ctx.fill(); //Fills it in with the color provided in fillStyle.
     ctx.stroke(); //finish drawing the rectangle
-    pipeArray[i].pipeX --;//moves the pipes to the west
+    pipeArray[i].pipeX -= speedPipes;//moves the pipes to the west
     if ((pipeArray[i].pipeX + pipeArray[i].pipeWidth) == 0) {
       pipeArray.splice(i-1,i)//if it is off the canvas draw it on the opposites side
       //@note [change] {When : " pipes are turned into a class "} : this will instead just nuke them 
@@ -201,8 +209,8 @@ function draw() {
   //}
     if ((ball.xPos + ball.rad > pipeArray[i].pipeX) && (ball.xPos+ ball.rad < pipeArray[i].pipeX + 2)) {//Checks to see if the ball has passed through the gap between the pipes
     score ++; //if it did, add a point to the score
-    var scoreTarget = document.getElementsById("score");
-    scoreTarget.innerHTML = "Score : " + score;
+    var scoreTarget = document.getElementById("score");
+    scoreTarget.innerHTML = "Score : " + score;//updates the score so that it shows
   }
 
   if ((ball.xPos + rad > pipeArray[i].pipeX) && (ball.yPos + rad < pipeArray[i].pipeHeight)||
@@ -211,11 +219,23 @@ function draw() {
  (ball.yPos + ball.yMove + rad > pipeArray[i].pipeYpoints.bottomPipeY) && (ball.xPos + rad < pipeArray[i].pipeWidth + pipeArray[i].pipeX) && (rad + ball.xPos > pipeArray[i].pipeX)|| //collides with the top of the bottom pipe
   (ball.yPos + ball.yMove - rad < pipeArray[i].pipeHeight) && (ball.xPos + rad < pipeArray[i].pipeWidth + pipeArray[i].pipeX) && (rad + ball.xPos > pipeArray[i].pipeX) //collides with the top of the bottom pipe
      ){//entire line of if statements that don't allow the ball to pass through the pipes : AKA Collitions
+     
      window.location.reload(true);//Reloads page so that it can reset 
   }
   }
-  timmer++;//adding to an itter to test and check for timming 
-  if (timmer == 300) {//if the time is at 3 seconds [timmer == 300 : (timmer x 10)/ 1000 = seconds];
+  timmer++;//adding to an itter to test and check for timming
+  secondTimmer++;////adding to an itter to test and check for timming for the difficulty only
+  thirdTimmer++;//same as the others
+  if (thirdTimmer == Math.floor(800*difficulty)) {
+    speedPipes = speedPipes * 1.1;
+  }
+  if (secondTimmer == 500) {
+   if (difficulty >0.15) {
+   difficulty = difficulty * 0.90; 
+   }
+  secondTimmer = 0;//reset timmer to allow for reitteration  
+  }
+  if (timmer == Math.floor(300*difficulty)) {//if the time is at 3 seconds [timmer == 300 : (timmer x 10)/ 1000 = seconds];
 //@variable rectWidth [integer:random] {restricted} : rectangele width raqndomizer
 var rectWidth = Math.floor(Math.random() * (150 - 100) + 100);
 
@@ -223,7 +243,7 @@ var rectWidth = Math.floor(Math.random() * (150 - 100) + 100);
 var rectHeight = Math.floor(Math.random() * (190 - 90) + 90);
 
     makeNewPipe(c.width-rectWidth,c.height-rectHeight,Math.floor(Math.random()*(c.height-200)+100),85,rectWidth,rectHeight);//makes a new pipe
-  timmer = 0;//reset timmer to allow for reitteration 
+  timmer = 0;
   }
 }
 setInterval(draw, 10);//draw() [Interval : start] {type:function Call, time:10ms}
