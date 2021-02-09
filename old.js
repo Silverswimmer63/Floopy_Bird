@@ -29,7 +29,7 @@ function drawCircle() {
 
 //var yRange = c.height - rect.height;
 //This function draws the pipes and makes them move from right to left accross the screen
-function makePipe(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, upRectY, upRectWid, upRectHeight){
+function makePipe(){
   ctx.clearRect(0, 0, c.width, c.height); //since it's a loop, this clears the canvas or else a lot of circles will be draw each time this function loops
   for (var i = 0; i < rectArray.length; i++) {
     ctx.beginPath(); //starts drawing the rectangle
