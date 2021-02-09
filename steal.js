@@ -248,3 +248,5 @@ function makeBounce(e) { //this function makes the ball bounce (or change direct
     gameState = 1;
   }
 }
+
+//got to go
