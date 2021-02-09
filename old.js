@@ -80,7 +80,7 @@ function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, 
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); //Clears the canvas every frame, so a new circle can be drawn.
   if (gameState == 1) {
-    makePipe(rectLower.xPos, rectLower.yPos, rectLower.width, rectLower.height, rectUpper.xPos, rectUpper.yPos, rectUpper.width, rectUpper.height);//draws the pipes
+    //makePipe(rectLower.xPos, rectLower.yPos, rectLower.width, rectLower.height, rectUpper.xPos, rectUpper.yPos, rectUpper.width, rectUpper.height);//draws the pipes
     if (difficultTimer == 1000) {//checks the timmer to see how difficult to make the game
       spaceDifficulty = spaceDifficulty - 40;//decreases the space between pipes
       if (spaceDifficulty < 200) {//prevents the pipes from getting to close
