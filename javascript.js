@@ -8,7 +8,7 @@ the x-direction each time it gets redrawn, yMove is how much the ball moves in
 the y-direction each time it gets redrawn, and rad is the radius of the ball.
 */
 var ball = {xPos: c.width/20, yPos: c.height/20, xMove: 5, yMove: 5, rad: 20};
-var gravity = 0.2; //its purpose is to add to the yPos so that the ball comes back down
+var gravity = 0.1; //its purpose is to add to the yPos so that the ball comes back down
 var damping = 0.75; //will be used later to dampen the speed of the ball
 var rectWidth = Math.floor(Math.random() * (125 - 100) + 100); //gives you a random number between 100-150 for the width of the rectangle being drawn
 var rectHeight = Math.floor(Math.random() * (190 - 170) + 170); //gives you a random number between 125-175 for the height of the rectangle being drawn
@@ -242,7 +242,7 @@ document.addEventListener("keydown", makeBounce); //addEventListenerws users to 
 function makeBounce(e) { //this function makes the ball bounce (or change direction in the x direction) when a key is pressed
   if ((e.key == " ") && (gameState != 2)) { //if space bar is hit, then ball will bounce
     //the (gameState != 2) is necessary to make sure that users can't continue playing the game after they lose by hitting a tube
-    ball.yMove -= 5; //the amount the ball is changing directions by to give illusion of bounce
+    ball.yMove -= 3; //the amount the ball is changing directions by to give illusion of bounce
     gameState = 1; //this sets the screen of the canvas to one that draws the birb and pipe so you can play the game
   }
   if (e.key == "x") { //if you press the 'x' key, you will reload the page, thus restarting the game
@@ -251,7 +251,7 @@ function makeBounce(e) { //this function makes the ball bounce (or change direct
 }
 c.addEventListener('click', function(event) { //this makes it possible for users to use their mouse to make the birb move
   if (gameState != 2) { //refrains the game to continue if the game is over
-    ball.yMove -= 5; //the amount the ball is changing directions by to give illusion of bounce
+    ball.yMove -= 3; //the amount the ball is changing directions by to give illusion of bounce
     gameState = 1; //this sets the screen of the canvas to one that draws the birb and pipe so you can play the game
   }
 })
