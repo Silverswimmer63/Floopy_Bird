@@ -4,7 +4,10 @@ var ctx = c.getContext("2d");
 var ball = {x: c.width/20, y: c.height/20, ballSize: 5, dx: 0, dy: 10}
 var gravity = .5; //Sets the gravity pulling the ball to the ground.
 var damping = 0.75; //The rate at which the ball slows down.
-var newArray = {xL: c.width - 10, yL: c.height - 100, widthL: 50, heightL: c.height, xU: c.width - 10, yU: 0, widthU: 50, heightU: c.height - 200};
+var newArray = [];
+var timer = 0;
+var spaceDifficulty = 400;
+var score = 0;
 /*var lowerRect = {xL: c.width - 10, yL: c.height - 100, widthL: 50, heightL: c.height};
 var upperRect = {xU: c.width - 10, yU: 0, widthU: 50, heightU: c.height - 200};
 var pipes  = {side1:upperRect.x + upperRect.y, side2 :upperRect.width + upperRect.height};
@@ -18,18 +21,20 @@ function drawCircle() {//this draws the ball keeps the shap and the colors
   ctx.stroke();
 }
 
-function makePipe(){
+function makePipe(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, upRectY, upRectWid, upRectHeight){
   ctx.clearRect(0, 0, c.width, c.height); //since it's a loop, this clears the canvas or else a lot of circles will be draw each time this function loops
-  ctx.beginPath(); //starts drawing the rectangle
-  ctx.rect(newArray[i].xL, newArray[i].yL, newArray[i].widthL, newArray[i].heightL);
-  ctx.fillStyle = "purple"; //Sets the color of the circle to light blue.
-  ctx.fill(); //Fills in the circle with the color provided in fillStyle.
-  ctx.stroke(); //finish drawing the rectangle
-  ctx.beginPath(); //starts drawing the rectangle
-  ctx.rect(newArray[i].xU, newArray[i].yU, newArray[i].widthU, newArray[i].heightU);
-  ctx.fillStyle = "purple"; //Sets the color of the circle to light blue.
-  ctx.fill(); //Fills in the circle with the color provided in fillStyle.
-  ctx.stroke(); //finish drawing the rectangle
+  for (var i = 0; i < newArray.length; i++) {
+    ctx.beginPath(); //starts drawing the rectangle
+    ctx.rect(newArray[i].xL, newArray[i].yL, newArray[i].widthL, newArray[i].heightL);
+    ctx.fillStyle = "purple"; //Sets the color of the circle to light blue.
+    ctx.fill(); //Fills in the circle with the color provided in fillStyle.
+    ctx.stroke(); //finish drawing the rectangle
+    ctx.beginPath(); //starts drawing the rectangle
+    ctx.rect(newArray[i].xU, newArray[i].yU, newArray[i].widthU, newArray[i].heightU);
+    ctx.fillStyle = "purple"; //Sets the color of the circle to light blue.
+    ctx.fill(); //Fills in the circle with the color provided in fillStyle.
+    ctx.stroke(); //finish drawing the rectangle
+  }
 }
 
 function collisionCheck() {
@@ -48,6 +53,11 @@ function collisionCheck() {
 
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); //Clears the canvas every frame, so a new circle can be drawn.
+  if (timer == spaceDifficulty) {
+    var rectArray = {xL: c.width - 10, yL: c.height - 100, widthL: 50, heightL: c.height, xU: c.width - 10, yU: 0, widthU: 50, heightU: c.height - 200};
+    newArray.push(rectArray);
+    timer = 0;
+  }
   for (var i = 0; i < newArray.length; i++) {
     makePipe(newArray[i].xL, newArray[i].yL, newArray[i].widthL, newArray[i].heightL, newArray[i].xU, newArray[i].yU, newArray[i].widthU, newArray[i].heightU);
     newArray[i].xL --;
@@ -68,6 +78,7 @@ function draw() {
   for (var i = 0; i < newArray.length; i++) {
     collisionCheck(newArray[i].xL, newArray[i].yL, newArray[i].widthL, newArray[i].heightL, newArray[i].xU, newArray[i].yU, newArray[i].widthU, newArray[i].heightU);
   }
+  timer ++;
 }
 
 setInterval(draw, 15);

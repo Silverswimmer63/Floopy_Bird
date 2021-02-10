@@ -12,6 +12,11 @@ var rectHeight = Math.floor(Math.random() * (190 - 170) + 170);//gives a random 
 var rectLower = {xPos: c.width - rectWidth, yPos: c.height - rectWidth, width: rectWidth, height: rectHeight};//creates the base of the pipe
 var rectUpper = {xPos: c.width - rectWidth, yPos: 0, width: rectWidth, height: rectHeight};//creates the top pipe
 var rectArray = [];//used to store multiple pipes on screen
+var timer = 0; //counter for when to create a new pipe`
+var difficultTimer = 0; //keeps track of how frequent pipes should apear on screen
+var score = 0; //tracks how many pipes you have passed through
+var spaceDifficulty = 400; //how frequently the pipes will apear after eachother
+var gameState = 1;
 
 function drawCircle() {
   ctx.beginPath();
@@ -73,7 +78,8 @@ function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, 
 //This function draws the pipes and the ball as well as sicking the score up and checking for collision
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); //Clears the canvas every frame, so a new circle can be drawn.
-    //makePipe(rectLower.xPos, rectLower.yPos, rectLower.width, rectLower.height, rectUpper.xPos, rectUpper.yPos, rectUpper.width, rectUpper.height);//draws the pipes
+  if (gameState == 1) {
+    if (timer == spaceDifficulty) {//checnksn the frequencey at which pipes are made
       var chance = Math.floor(Math.random() * (1 - 4) + 4);// 1 out of 3 chance to draw a pipe of a random height
       if (chance == 1) {//makes a gap between the pipes
         var rectHUp = Math.floor(Math.random() * (190 - 150) + 150);//randomly generates the height of the pipe
@@ -86,9 +92,11 @@ function draw() {
       if (chance == 3) {//this makes the pipe gap closer to the top of the screen
         var rectHUp = Math.floor(Math.random() * (90 - 70) + 70);//randomly generates the height of the pipe
         var rectHLow = Math.floor(Math.random() * (310 - 290) + 290);//randomly generates the height of the pipe
+      }
       var rectW = Math.floor(Math.random() * (125 - 100) + 100);//gives a random width for the rectangle
       var newRect = {xPosL: c.width-rectW, yPosL: c.height-rectHLow, widthL: rectW, heightL: rectHLow, xPosU: c.width-rectW, yPosU: 0, widthU: rectW, heightU: rectHUp};//has the info to draw a top and bottom pipe
       rectArray.push(newRect);//pushes the newly created pipe into to be used later in a loop
+      timer = 0;//resets the timer
     }
     for (var i = 0; i < rectArray.length; i++) {//uses rectArray to draw the new pipes on screen
       makePipe(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU);//draws the pipes
@@ -112,6 +120,7 @@ function draw() {
     }
     timer ++;//increments the timmer to make the pipe placement closer
     difficultTimer ++;//increments to increase the difficulty
+  }
   if (gameState == 2) {
     location.reload();
   }
