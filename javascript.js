@@ -26,19 +26,19 @@ var img = new Image(); //basically creates the image
 img.onload = function(){ //uploads the image onto the screen
   drawBirb(); //uses a function from below
 }
-img.src="witch.png"; //source for where the image is coming from
+img.src="birb.png"; //source for where the image is coming from
 
 var imgUp = new Image(); //basically creates the image
 imgUp.onload = function(){ //uploads the image onto the screen
   drawBirb(); //uses a function from below
 }
-imgUp.src="witchUp.png"; //source for where the image is coming from
+imgUp.src="birbUp.png"; //source for where the image is coming from
 
 var imgDown = new Image(); //basically creates the image
 imgDown.onload = function(){ //uploads the image onto the screen
   drawBirb(); //uses a function from below
 }
-imgDown.src="witchDown.png"; //source for where the image is coming from
+imgDown.src="birbDown.png"; //source for where the image is coming from
 
 var imgStart = new Image(); //basically creates the image
 imgStart.onload = function(){ //uploads the image onto the screen
