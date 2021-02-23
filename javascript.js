@@ -145,7 +145,7 @@ function makePipe(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, upRect
 this function checks to see if the ball is touching/going through the left sides and top/bottom sides of the two pipes
 */
 function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, upRectY, upRectWid, upRectHeight){
-  if ((ball.xPos + ball.xMove + ball.rad > lowRectX) && (ball.xPos + ball.xMove + ball.rad < lowRectX + 2)) {//Checks to see if the ball has passed through the gap between the pipes
+  if ((ball.xPos + ball.xMove + ball.rad > lowRectX+150) && (ball.xPos + ball.xMove + ball.rad < lowRectX + 152)) {//Checks to see if the ball has passed through the gap between the pipes
     score ++; //if it did, add a point to the score
     console.log(score); //log the score so it is visible and we can keep track of it
     document.getElementById('score').innerHTML = "Score: " + score; //shows the points (and updated points) on the top center of the screen
