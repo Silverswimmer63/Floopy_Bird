@@ -2,7 +2,7 @@ var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 
 //These 2 variables determine the starting circles location, in this case, the top left of the screen.
-var ball = {x: c.width/2, y: c.height/2, ballSize: 15}
+var ball = {x: c.width/2, y: c.height/2, ballSize: 16}
 var dx = 0; //These variables will be used later to change the position of the circle.
 var dy = 10; //Changing both of these numbers will also change the speed of the circle (in other words, how many units the circle moves per frame).
 var gravity = .07; //Sets the gravity pulling the ball to the ground.
@@ -19,12 +19,44 @@ var spaceDifficulty = 400; //how frequently the pipes will apear after eachother
 var imageCounter = 0;
 var gameState = 1;
 
+var birb = new Image();
+birb.onload = function() {
+  drawCircle();
+}
+birb.src = "birb.png";
+
+var birbDown = new Image();
+birbDown.onload = function() {
+  drawCircle();
+}
+birbDown.src = "birbDown.png";
+
+var birbUp = new Image();
+birbUp.onload = function() {
+  drawCircle();
+}
+birbUp.src = "birbUp.png";
+
 function drawCircle() {
+  ctx.save();
   ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.ballSize, 0, Math.PI*2); //The circle, on frame one, will always start at the top left, and its size will always be set to ballSize.
-  ctx.fillStyle = "#FF00FF"; //Sets the color of the circle to light blue.
-  ctx.fill(); //Fills in the circle with the color provided in fillStyle.
+  if (imageCounter == 0) {
+    ctx.drawImage(birb, ball.xPos-ball.rad-8, ball.yPos-ball.rad-8, ball.rad+32, ball.rad+16);
+  }
+  if (imageCounter == 1) {
+    ctx.drawImage(birbUp, ball.xPos-ball.rad-8, ball.yPos-ball.rad-8, ball.rad+32, ball.rad+16);
+  }
+  if (imageCounter == 2) {
+    ctx.drawImage(birbDown, ball.xPos-ball.rad-8, ball.yPos-ball.rad-8, ball.rad+32, ball.rad+16);
+  }
+  ctx.fill();
   ctx.stroke();
+  ctx.restore();
+  //ctx.beginPath();
+  //ctx.arc(ball.x, ball.y, ball.ballSize, 0, Math.PI*2); //The circle, on frame one, will always start at the top left, and its size will always be set to ballSize.
+  //ctx.fillStyle = "#FF00FF"; //Sets the color of the circle to light blue.
+  //ctx.fill(); //Fills in the circle with the color provided in fillStyle.
+  //ctx.stroke();
 }
 
 //var yRange = c.height - rect.height;
@@ -121,6 +153,15 @@ function draw() {
     }
     dy += gravity; //Adds the gravity value to the ball's dy value, giving it a artificial force of gravity.
     ball.x += dx;
+    if (dy < 1) {
+      imageCounter = 1;
+    }
+    else if (dy > 2) {
+      imageCounter = 2;
+    }
+    else {
+      imageCounter = 0;
+    }
     if (((ball.y + dy) + ball.ballSize) <= c.height) {//prevents the ball from falling off the canvas
       ball.y += dy;
     }
