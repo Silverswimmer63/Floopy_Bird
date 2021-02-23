@@ -41,13 +41,13 @@ function drawCircle() {
   ctx.save();
   ctx.beginPath();
   if (imageCounter == 0) {
-    ctx.drawImage(birb, ball.xPos-ball.rad-8, ball.yPos-ball.rad-8, ball.rad+32, ball.rad+16);
+    ctx.drawImage(birb, ball.x-ball.ballSize-8, ball.y-ball.ballSize-8, ball.ballSize+32, ball.ballSize+16);
   }
   if (imageCounter == 1) {
-    ctx.drawImage(birbUp, ball.xPos-ball.rad-8, ball.yPos-ball.rad-8, ball.rad+32, ball.rad+16);
+    ctx.drawImage(birbUp, ball.x-ball.ballSize-8, ball.y-ball.ballSize-8, ball.ballSize+34, ball.ballSize+34);
   }
   if (imageCounter == 2) {
-    ctx.drawImage(birbDown, ball.xPos-ball.rad-8, ball.yPos-ball.rad-8, ball.rad+32, ball.rad+16);
+    ctx.drawImage(birbDown, ball.x-ball.ballSize-8, ball.y-ball.ballSize-8, ball.ballSize+30, ball.ballSize+30);
   }
   ctx.fill();
   ctx.stroke();
@@ -111,7 +111,6 @@ function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, 
 //This function draws the pipes and the ball as well as sicking the score up and checking for collision
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); //Clears the canvas every frame, so a new circle can be drawn.
-  if (gameState == 1) {
     //makePipe(rectLower.xPos, rectLower.yPos, rectLower.width, rectLower.height, rectUpper.xPos, rectUpper.yPos, rectUpper.width, rectUpper.height);//draws the pipes
     if (difficultTimer == 1000) {//checks the timmer to see how difficult to make the game
       spaceDifficulty = spaceDifficulty - 40;//decreases the space between pipes
@@ -153,7 +152,7 @@ function draw() {
     }
     dy += gravity; //Adds the gravity value to the ball's dy value, giving it a artificial force of gravity.
     ball.x += dx;
-    if (dy < 1) {
+    if (dy < -1) {
       imageCounter = 1;
     }
     else if (dy > 2) {
@@ -162,6 +161,7 @@ function draw() {
     else {
       imageCounter = 0;
     }
+    console.log(imageCounter);
     if (((ball.y + dy) + ball.ballSize) <= c.height) {//prevents the ball from falling off the canvas
       ball.y += dy;
     }
@@ -170,10 +170,9 @@ function draw() {
     }
     timer ++;//increments the timmer to make the pipe placement closer
     difficultTimer ++;//increments to increase the difficulty
-  }
-  if (gameState == 2) {
-    location.reload();
-  }
+    if (gameState == 2) {
+      location.reload();
+    }
 }
 
 setInterval(draw, 10);//makes the game run
