@@ -145,7 +145,7 @@ function makePipe(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, upRect
 this function checks to see if the ball is touching/going through the left sides and top/bottom sides of the two pipes
 */
 function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, upRectY, upRectWid, upRectHeight){
-  if ((ball.xPos + ball.xMove + ball.rad > lowRectX+150) && (ball.xPos + ball.xMove + ball.rad < lowRectX + 152)) {//Checks to see if the ball has passed through the gap between the pipes
+  if ((ball.xPos + ball.xMove + ball.rad > lowRectX+lowRectWid+2*ball.rad) && (ball.xPos + ball.xMove + ball.rad < lowRectX+lowRectWid+2*ball.rad+2)) {//Checks to see if the ball has passed through the gap between the pipes
     score ++; //if it did, add a point to the score
     console.log(score); //log the score so it is visible and we can keep track of it
     document.getElementById('score').innerHTML = "Score: " + score; //shows the points (and updated points) on the top center of the screen
@@ -240,7 +240,7 @@ setInterval(draw, 10); //like a loop that repeats the draw function to keep draw
 
 document.addEventListener("keydown", makeBounce); //addEventListenerws users to hit a key on keyboard to interact with the objects
 function makeBounce(e) { //this function makes the ball bounce (or change direction in the x direction) when a key is pressed
-  if ((e.key == " ") && (gameState != 2)) { //if space bar is hit, then ball will bounce
+  if (e.key == " ") { //if space bar is hit, then ball will bounce
     //the (gameState != 2) is necessary to make sure that users can't continue playing the game after they lose by hitting a tube
     ball.yMove -= 3; //the amount the ball is changing directions by to give illusion of bounce
     gameState = 1; //this sets the screen of the canvas to one that draws the birb and pipe so you can play the game
