@@ -21,3 +21,8 @@ div{
   font-family:cursive;
   text-align:center;
 }
+#startButton{
+  left: 675px;
+  bottom: 400px;
+  position: absolute;
+}

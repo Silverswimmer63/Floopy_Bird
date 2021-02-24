@@ -14,6 +14,14 @@ var secondTimmer = 0;//difficulty timmer
 
 var thirdTimmer = 0;//speed timmer 
 
+var gameState = false;//The game's state true playing false is stopped not playing
+document.getElementById("startButton").addEventListener("click", changeGameState)
+function changeGameState() {
+    if (gameState == false) {
+document.getElementById("startButton").style.visibility = "hidden";
+        gameState = true;
+    }
+}
 var score = 0;//score counter;
 //@variable c [Object] : Canvas elements
 var c = document.getElementById("myCanvas");
@@ -41,6 +49,8 @@ var direction = "Forward";
 //function drawCircle();
 //@purpose [draw] : draws and refreshes the ball/birb
 function drawCircle() {
+ if (gameState == true) {
+    //code
  ctx.save();
   ctx.beginPath();//beggins dawing
   if (ball.yMove < -1) {
@@ -68,6 +78,7 @@ ctx.drawImage(flipFlap, (ball.xPos-(rad+3)),(ball.yPos-(rad+7)),(rad)+30,(rad)+3
   ctx.fill();//sets the fill
   ctx.stroke();//ends drawing
   ctx.restore();
+ }
 }
 
 
@@ -188,6 +199,12 @@ for (var i = 0; i < pipeArray.length;i++) {
 //@purpose [handeler] {handels : makePipe() [function], drawCircle() [function],clearing, ball updates}
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);//clears to allow clean updates
+  if (gameState == false) {
+   ctx.font = "75px Ariel";
+   ctx.fillStyle = "White";
+   ctx.fillText("Floopy Birb", 325,100);
+   ctx.strokeText("Floopy Birb", 325,100);
+  }else {
   makePipe();//draws pipes
   drawCircle();//draws birb/ball
   if (ball.xPos + ball.xMove > c.width - rad || ball.xPos + ball.xMove < rad) {
@@ -200,6 +217,8 @@ function draw() {
   //ball.xPos += ball.xMove;//makes the ball move around 
   if (((ball.yPos + ball.yMove) + rad) <= c.height) {
     ball.yPos += ball.yMove; //Wall collition dirrection change
+  }else{   
+     window.location.reload(true);//Reloads page so that it can reset 
   }
   for (var i = 0; i < pipeArray.length; i++) {//for loop that itterates through the pipeArray to check for collitions
   //if (ball.xPos == (pipeArray[i].pipeX+(pipeArray[i].pipeWidth)) && (ball.yPos >= pipeArray[i].pipeYpoints.topPipeY && ball.yPos <= pipeArray[i].pipeYpoints.bottomPipeY)) {
@@ -245,6 +264,7 @@ var rectHeight = Math.floor(Math.random() * (190 - 90) + 90);
     makeNewPipe(c.width-rectWidth,c.height-rectHeight,Math.floor(Math.random()*(c.height-200)+100),85,rectWidth,rectHeight);//makes a new pipe
   timmer = 0;
   }
+  }
 }
 setInterval(draw, 10);//draw() [Interval : start] {type:function Call, time:10ms}
 
@@ -252,8 +272,10 @@ setInterval(draw, 10);//draw() [Interval : start] {type:function Call, time:10ms
 document.addEventListener("keyup", makeBounce);
 function makeBounce(e) {
   //e.key [string] {r_key: "r"};
-  if (e.key == " ") {
-    ball.yMove -= 4;//adding to the change in the y position to make the ball jump
+  if (gameState == true) {
+   if (e.key == " ") {
+     ball.yMove -= 4;//adding to the change in the y position to make the ball jump
+   }
   }
   //e.key [string] {space_bar : " "}
   if (e.key == "r") {
