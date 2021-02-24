@@ -19,6 +19,7 @@ var spaceDifficulty = 400; //how frequently the pipes will apear after eachother
 var imageCounter = 0;
 var gameState = 1;
 
+//these functions import the bird image into a variable to be worked with in drawCircle
 var birb = new Image();
 birb.onload = function() {
   drawCircle();
@@ -37,17 +38,18 @@ birbUp.onload = function() {
 }
 birbUp.src = "birbUp.png";
 
+//this function draws the bird
 function drawCircle() {
   ctx.save();
   ctx.beginPath();
   if (imageCounter == 0) {
-    ctx.drawImage(birb, ball.x-ball.ballSize-8, ball.y-ball.ballSize-8, ball.ballSize+32, ball.ballSize+16);
+    ctx.drawImage(birb, ball.x-ball.ballSize-8, ball.y-ball.ballSize-8, ball.ballSize+32, ball.ballSize+16);//uses the image variables t odraw the bird image on the ball
   }
   if (imageCounter == 1) {
-    ctx.drawImage(birbUp, ball.x-ball.ballSize-8, ball.y-ball.ballSize-8, ball.ballSize+34, ball.ballSize+34);
+    ctx.drawImage(birbUp, ball.x-ball.ballSize-8, ball.y-ball.ballSize-8, ball.ballSize+34, ball.ballSize+34);//uses the image variables t odraw the bird image on the ball
   }
   if (imageCounter == 2) {
-    ctx.drawImage(birbDown, ball.x-ball.ballSize-8, ball.y-ball.ballSize-8, ball.ballSize+30, ball.ballSize+30);
+    ctx.drawImage(birbDown, ball.x-ball.ballSize-8, ball.y-ball.ballSize-8, ball.ballSize+30, ball.ballSize+30);//uses the image variables t odraw the bird image on the ball
   }
   ctx.fill();
   ctx.stroke();
@@ -152,13 +154,13 @@ function draw() {
     }
     dy += gravity; //Adds the gravity value to the ball's dy value, giving it a artificial force of gravity.
     ball.x += dx;
-    if (dy < -1) {
+    if (dy < -1) {//tells drawCircle what direction the bird is moving
       imageCounter = 1;
     }
-    else if (dy > 2) {
+    else if (dy > 2) {//tells drawCircle what direction the bird is moving
       imageCounter = 2;
     }
-    else {
+    else {//tells drawCircle what direction the bird is moving
       imageCounter = 0;
     }
     console.log(imageCounter);
