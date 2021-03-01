@@ -17,7 +17,7 @@ var difficultTimer = 0; //keeps track of how frequent pipes should apear on scre
 var score = 0; //tracks how many pipes you have passed through
 var spaceDifficulty = 400; //how frequently the pipes will apear after eachother
 var imageCounter = 0;
-var gameState = 1;
+var gameState = 0;
 
 //these functions import the bird image into a variable to be worked with in drawCircle
 var birb = new Image();
@@ -37,6 +37,37 @@ birbUp.onload = function() {
   drawCircle();
 }
 birbUp.src = "birbUp.png";
+
+var birbStart = new Image();
+birbStart.onload = function(){
+  drawStart();
+}
+birbStart.src="start.png";
+
+var birbEnd = new Image();
+birbEnd.onload = function(){
+  drawEnd();
+}
+birbEnd.src="gameover.png";
+
+function drawStart() {
+ ctx.save();
+ ctx.beginPath();
+ ctx.drawImage(birbStart, 300, 80, 400, 500);
+ ctx.fill();
+ ctx.stroke();
+ ctx.restore();
+}
+
+function drawEnd() {
+ ctx.save();
+ ctx.beginPath();
+ ctx.drawImage(birbEnd, 300, 0, 400, 400);
+ ctx.fill();
+ ctx.stroke();
+ ctx.restore();
+}
+
 
 //this function draws the bird
 function drawCircle() {
@@ -113,6 +144,10 @@ function collisionCheck(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, 
 //This function draws the pipes and the ball as well as sicking the score up and checking for collision
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height); //Clears the canvas every frame, so a new circle can be drawn.
+  if (gameState == 0) {
+    drawStart();
+  }
+  if (gameState == 1) {
     //makePipe(rectLower.xPos, rectLower.yPos, rectLower.width, rectLower.height, rectUpper.xPos, rectUpper.yPos, rectUpper.width, rectUpper.height);//draws the pipes
     if (difficultTimer == 1000) {//checks the timmer to see how difficult to make the game
       spaceDifficulty = spaceDifficulty - 40;//decreases the space between pipes
@@ -172,9 +207,11 @@ function draw() {
     }
     timer ++;//increments the timmer to make the pipe placement closer
     difficultTimer ++;//increments to increase the difficulty
-    if (gameState == 2) {
-      location.reload();
-    }
+  }
+  if (gameState == 2) {
+    drawEnd();
+    //location.reload();
+  }
 }
 
 setInterval(draw, 10);//makes the game run
@@ -183,9 +220,10 @@ document.addEventListener("keydown", makeBounce);//listens for a key press
 function makeBounce(e) {
  if (e.key == " ") {//if the spacebar is pressed the ball gains y velcity
    dy -= 3;
+   gameState = 1;
  }
- if (e.key == "r") {//if thr "r" key is pressed the x direction is flipped
-   gameState == 1;
+ if (e.key == "x") {//if thr "r" key is pressed the x direction is flipped
+   window.location.reload();
  }
 }
 
