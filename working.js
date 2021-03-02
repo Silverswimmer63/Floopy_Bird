@@ -50,6 +50,7 @@ birbEnd.onload = function(){
 }
 birbEnd.src="gameover.png";
 
+//draws the starting image
 function drawStart() {
  ctx.save();
  ctx.beginPath();
@@ -59,6 +60,7 @@ function drawStart() {
  ctx.restore();
 }
 
+//draws the ending image
 function drawEnd() {
  ctx.save();
  ctx.beginPath();
