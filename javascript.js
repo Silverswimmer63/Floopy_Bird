@@ -52,6 +52,12 @@ imgEnd.onload = function(){ //uploads the image onto the screen
 }
 imgEnd.src="gameover.png"; //source for where the image is coming from
 
+var tube = new Image(); //basically creates the image
+tube.onload = function(){ //uploads the image onto the screen
+  makePipe(); //uses a function from below
+}
+tube.src="tube.png"; //source for where the image is coming from
+
 // drawStart() - draws the start screen of the game
 function drawStart() {
  ctx.save(); //saves the present condition/state of the image/game
@@ -107,29 +113,33 @@ function makePipe(lowRectX, lowRectY, lowRectWid, lowRectHeight, upRectX, upRect
   ctx.clearRect(0, 0, c.width, c.height); //clears the canvas each time it loops to give illusion of animation
   for (var i = 0; i < rectArray.length; i++) { //goes through the array, which stores the specifications for drawing the pipes
     //code for the bottom, long pipe
-    ctx.beginPath(); //starts drawing the rectangle
-    ctx.rect(rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL); //specifications for drawing the pipe
-    ctx.fillStyle = "green"; //sets the fill color of the rectangle to green
-    ctx.fill(); //uses the color green mentioned above to fill in the rectangle
-    ctx.stroke(); //finish drawing the rectangle
+    ctx.save(); //saves the present condition/state of the image/game
+    ctx.beginPath(); //starts drawing the screen
+    ctx.drawImage(tube, rectArray[i].xPosL, rectArray[i].yPosL, rectArray[i].widthL, rectArray[i].heightL); //gives specifications for drawing it
+    ctx.fill(); //fills the image/drawing
+    ctx.stroke(); //finishes the drawing
+    ctx.restore(); //reuses the saved image
     //code for the top of the pipe on the bottom of the screen
-    ctx.beginPath(); //starts drawing the rectangle
-    ctx.rect(rectArray[i].xPosL-15, rectArray[i].yPosL, rectArray[i].widthL+30, 40); //gives specifications for drawing it
-    ctx.fillStyle = "green"; //sets the fill color of the rectangle to green
-    ctx.fill(); //uses the color green mentioned above to fill in the rectangle
-    ctx.stroke(); //finish drawing the rectangle
+    ctx.save(); //saves the present condition/state of the image/game
+    ctx.beginPath(); //starts drawing the screen
+    ctx.drawImage(tube, rectArray[i].xPosL-15, rectArray[i].yPosL, rectArray[i].widthL+30, 40); //gives specifications for drawing it
+    ctx.fill(); //fills the image/drawing
+    ctx.stroke(); //finishes the drawing
+    ctx.restore(); //reuses the saved image
     //code for the long pipe moving at the top of the canvas/screen
-    ctx.beginPath(); //starts drawing the rectangle
-    ctx.rect(rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU);
-    ctx.fillStyle = "green"; //sets the fill color of the rectangle to green
-    ctx.fill(); //uses the color green mentioned above to fill in the rectangle
-    ctx.stroke(); //finish drawing the rectangle
+    ctx.save(); //saves the present condition/state of the image/game
+    ctx.beginPath(); //starts drawing the screen
+    ctx.drawImage(tube, rectArray[i].xPosU, rectArray[i].yPosU, rectArray[i].widthU, rectArray[i].heightU); //gives specifications for drawing it
+    ctx.fill(); //fills the image/drawing
+    ctx.stroke(); //finishes the drawing
+    ctx.restore(); //reuses the saved image
     //code for the bottom of the long/bigger pipe moving at the top of the screen
-    ctx.beginPath(); //starts drawing the rectangle
-    ctx.rect(rectArray[i].xPosU-15, rectArray[i].heightU-40, rectArray[i].widthU+30, 40); //gives specifications for drawing it
-    ctx.fillStyle = "green"; //sets the fill color of the rectangle to green
-    ctx.fill(); //uses the color green mentioned above to fill in the rectangle
-    ctx.stroke(); //finish drawing the rectangle
+    ctx.save(); //saves the present condition/state of the image/game
+    ctx.beginPath(); //starts drawing the screen
+    ctx.drawImage(tube, rectArray[i].xPosU-15, rectArray[i].heightU-40, rectArray[i].widthU+30, 40); //gives specifications for drawing it
+    ctx.fill(); //fills the image/drawing
+    ctx.stroke(); //finishes the drawing
+    ctx.restore(); //reuses the saved image
   }
 }
 
@@ -240,7 +250,7 @@ setInterval(draw, 10); //like a loop that repeats the draw function to keep draw
 
 document.addEventListener("keydown", makeBounce); //addEventListenerws users to hit a key on keyboard to interact with the objects
 function makeBounce(e) { //this function makes the ball bounce (or change direction in the x direction) when a key is pressed
-  if (e.key == " ") { //if space bar is hit, then ball will bounce
+  if ((e.key == " ") && (gameState != 2)) { //if space bar is hit, then ball will bounce
     //the (gameState != 2) is necessary to make sure that users can't continue playing the game after they lose by hitting a tube
     ball.yMove -= 3; //the amount the ball is changing directions by to give illusion of bounce
     gameState = 1; //this sets the screen of the canvas to one that draws the birb and pipe so you can play the game
